@@ -9,6 +9,12 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest'
   },
+
+  settings: {
+    react: {
+      version: 'detect'
+    }
+  },
   rules: {
     semi: ['error', 'always'],
     quotes: ['error', 'single'],
