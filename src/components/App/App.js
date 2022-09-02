@@ -5,7 +5,6 @@ import './App.css';
 import Login from './Login';
 import Home from './Home';
 import Register from '../Register';
-// import useHttpRequest from '../../hooks/useHttpRequest';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App () {

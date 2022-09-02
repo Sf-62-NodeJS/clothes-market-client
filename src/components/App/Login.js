@@ -21,21 +21,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // fetch('API Address', {
-    //   method: 'POST',
-    //   body: JSON.stringify({
-    //     email: user,
-    //     password: pwd
-    //   })
-    // })
-    //   .then((response) => response.json())
-    //   .then((result) => {
-    //     if (result.message === 'SUCCESS') {
-    //       alert('You are logged in.');
-    //     } else {
-    //       alert('Please check your login onformation.');
-    //     }
-    //   });
     console.log(user, pwd);
     setUser('');
     setPwd('');
