@@ -1,7 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Logo from '../../images/logo.png';
+import { NavLink } from 'react-router-dom';
+import useHttpRequest from '../../hooks/useHttpRequest';
 
 function Header () {
+  const {
+    state: { error, data, loading }
+  } = useHttpRequest({
+    method: 'GET',
+    url: '/categories/'
+  });
+
+  const navMenu = [
+    { id: '/', text: 'Home' },
+    { id: '/Shop', text: 'Shop' },
+    { id: '/Contact', text: 'Contact' }
+  ];
+  const pages = [
+    { id: '/Cart', text: 'Cart' },
+    { id: '/Checkout', text: 'Checkout' },
+    { id: '/Register', text: 'Register' }
+  ];
+
+  const [active, setActive] = useState();
+
   return (
         <header className="header-section">
             <div className="container">
@@ -9,9 +31,9 @@ function Header () {
                     <div className="row">
                         <div className="col-lg-2 col-md-2">
                             <div className="logo">
-                                <a href="#">
+                                <NavLink to="/">
                                     <img src={Logo} alt="" />
-                                </a>
+                                </NavLink>
                             </div>
                         </div>
                         <div className="col-lg-7 col-md-7">
@@ -46,62 +68,56 @@ function Header () {
                             <i className="ti-menu"></i>
                             <span>All categories</span>
                             <ul className="depart-hover">
-                                <li>
-                                    <a href="#">Women Clothing</a>
-                                </li>
-                                <li>
-                                    <a href="#">Men Clothing</a>
-                                </li>
-                                <li>
-                                    <a href="#">Underwear</a>
-                                </li>
-                                <li>
-                                    <a href="#">Kids Clothing</a>
-                                </li>
-                                <li>
-                                    <a href="#">Brand Fashion</a>
-                                </li>
-                                <li>
-                                    <a href="#">Accessories/Shoes</a>
-                                </li>
-                                <li>
-                                    <a href="#">Luxury Brands</a>
-                                </li>
-                                <li>
-                                    <a href="#">Brand Outdoor Apparel</a>
-                                </li>
+                                {error && <li>Error...</li>}
+                                {loading && <li>Loading...</li>}
+                                {data &&
+                                    data.map((category) => (
+                                        <li
+                                            key={category._id}
+                                            onClick={() =>
+                                              setActive(category._id)
+                                            }
+                                            className={
+                                                active === category._id
+                                                  ? 'active'
+                                                  : 'null'
+                                            }
+                                        >
+                                            <NavLink
+                                                to={`/products/?category=${category.name}`}
+                                            >
+                                                {category.name}
+                                            </NavLink>
+                                        </li>
+                                    ))}
                             </ul>
                         </div>
                     </div>
                     <nav className="nav-menu">
                         <ul>
-                            <li className="active">
-                                <a href="./index.html">Home</a>
-                            </li>
+                            {navMenu.map((page) => (
+                                <li
+                                    key={page.id}
+                                    onClick={() => setActive(page.id)}
+                                    className={
+                                        active === page.id ? 'active' : 'null'
+                                    }
+                                >
+                                    <NavLink to={`${page.id}`}>
+                                        {page.text}
+                                    </NavLink>
+                                </li>
+                            ))}
                             <li>
-                                <a href="#">Shop</a>
-                            </li>
-                            <li>
-                                <a href="#">Contact</a>
-                            </li>
-                            <li>
-                                <a href="#">Pages</a>
+                                <a>Pages</a>
                                 <ul className="dropdown">
-                                    <li>
-                                        <a href="#">Blog Details</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Shopping Cart</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Checkout</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Faq</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Register</a>
-                                    </li>
+                                    {pages.map((page) => (
+                                        <li key={page.id}>
+                                            <NavLink to={`${page.text}`}>
+                                                {page.text}
+                                            </NavLink>
+                                        </li>
+                                    ))}
                                 </ul>
                             </li>
                         </ul>
