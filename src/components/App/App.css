@@ -297,7 +297,7 @@ ol {
 
 .ht-right .lan-selector .ddcommon .ddTitle .ddArrow:before {
 	content: "3";
-	font-family: "ElegantIcons";
+	font-family: "elegant-icons";
 	font-size: 14px;
 	color: #636363;
 	float: right;
@@ -460,7 +460,7 @@ ol {
 	right: 11px;
 	top: 10px;
 	content: "3";
-	font-family: "ElegantIcons";
+	font-family: "elegant-icons";
 	font-size: 16px;
 	color: #b2b2b2;
 }
