@@ -33,7 +33,6 @@
 @import url('https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap');
 @import url('https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.min.css');
 @import url('https://cdn.jsdelivr.net/npm/@icon/elegant-icons@0.0.1-alpha.4/elegant-icons.min.css');
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/fontawesome.min.css');
 
 html,
 body {
@@ -4132,6 +4131,7 @@ ol {
 	.slicknav_nav a,
 	.slicknav_nav .slicknav_row {
 		margin: 0;
+		padding: 8px 15px;
 	}
 	.slicknav_nav .dropdown a {
 		padding-left: 25px;
@@ -4144,10 +4144,6 @@ ol {
 		background-color: #e7ab3c;
 		display: inline-block;
 		right: -16px;
-	}
-	.slicknav_nav .slicknav_row,
-	.slicknav_nav a {
-		padding: 8px 15px;
 	}
 	.slicknav_nav a:hover {
 		border-radius: 0;
