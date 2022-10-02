@@ -12,17 +12,14 @@ function Header () {
   });
 
   const navMenu = [
-    { id: '/', text: 'Home' },
-    { id: '/Shop', text: 'Shop' },
-    { id: '/Contact', text: 'Contact' }
-  ];
-  const pages = [
-    { id: '/Cart', text: 'Cart' },
-    { id: '/Checkout', text: 'Checkout' },
-    { id: '/Register', text: 'Register' }
+    { ref: '/', text: 'Home' },
+    { ref: '/Shop', text: 'Shop' },
+    { ref: '/Contact', text: 'Contact' }
   ];
 
   const [active, setActive] = useState();
+  const [searchTerm, setSearchTerm] = useState();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
         <header className="header-section">
@@ -32,21 +29,25 @@ function Header () {
                         <div className="col-lg-2 col-md-2">
                             <div className="logo">
                                 <NavLink to="/">
-                                    <img src={Logo} alt="" />
+                                    <img src={Logo} alt="Logo" />
                                 </NavLink>
                             </div>
                         </div>
                         <div className="col-lg-7 col-md-7">
                             <div className="advanced-search">
-                                <button type="button" className="category-btn">
-                                    All Categories
-                                </button>
                                 <div className="input-group">
                                     <input
                                         type="text"
                                         placeholder="What do you need?"
+                                        value={searchTerm}
+                                        onChange={(e) =>
+                                          setSearchTerm(e.target.value)
+                                        }
                                     />
-                                    <button type="button">
+                                    <button
+                                        type="button"
+                                        onClick={() => searchTerm}
+                                    >
                                         <i className="ti-search"></i>
                                     </button>
                                 </div>
@@ -54,8 +55,35 @@ function Header () {
                         </div>
                         <div className="col-lg-3 text-right col-md-3">
                             <ul className="nav-right">
-                                <i className="fa fa-user"></i>Login
-                                <div className="lan-selector" />
+                                {' '}
+                                {isLoggedIn
+                                  ? (
+                                    <>
+                                        <i className="fa fa-cart-arrow-down"></i>{' '}
+                                        Shopping Cart
+                                        <br />
+                                        <i className="fa fa-user-circle"></i>{' '}
+                                        Profile <br />
+                                        <div
+                                            onClick={() => setIsLoggedIn(false)}
+                                        >
+                                            <i className="fa fa-sign-out"></i>{' '}
+                                            Logout
+                                        </div>
+                                    </>
+                                    )
+                                  : (
+                                    <>
+                                        <div
+                                            onClick={() => setIsLoggedIn(true)}
+                                        >
+                                            <i className="fa fa-sign-in"></i>{' '}
+                                            Login{' '}
+                                        </div>
+                                        <i className="fa fa-unlock-alt"></i>{' '}
+                                        Register
+                                    </>
+                                    )}
                             </ul>
                         </div>
                     </div>
@@ -97,29 +125,17 @@ function Header () {
                         <ul>
                             {navMenu.map((page) => (
                                 <li
-                                    key={page.id}
-                                    onClick={() => setActive(page.id)}
+                                    key={page.ref}
+                                    onClick={() => setActive(page.ref)}
                                     className={
-                                        active === page.id ? 'active' : 'null'
+                                        active === page.ref ? 'active' : 'null'
                                     }
                                 >
-                                    <NavLink to={`${page.id}`}>
+                                    <NavLink to={`${page.ref}`}>
                                         {page.text}
                                     </NavLink>
                                 </li>
                             ))}
-                            <li>
-                                <a>Pages</a>
-                                <ul className="dropdown">
-                                    {pages.map((page) => (
-                                        <li key={page.id}>
-                                            <NavLink to={`${page.text}`}>
-                                                {page.text}
-                                            </NavLink>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </li>
                         </ul>
                     </nav>
                 </div>
