@@ -12,12 +12,12 @@ function Header () {
   });
 
   const navMenu = [
-    { ref: '/', text: 'Home' },
-    { ref: '/Shop', text: 'Shop' },
-    { ref: '/Contact', text: 'Contact' }
+    { path: '/', title: 'Home' },
+    { path: '/Shop', title: 'Shop' },
+    { path: '/Contact', title: 'Contact' }
   ];
 
-  const [active, setActive] = useState();
+  const [active, setActive] = useState(window.location.pathname);
   const [searchTerm, setSearchTerm] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -125,14 +125,14 @@ function Header () {
                         <ul>
                             {navMenu.map((page) => (
                                 <li
-                                    key={page.ref}
-                                    onClick={() => setActive(page.ref)}
+                                    key={page.path}
+                                    onClick={() => setActive(page.path)}
                                     className={
-                                        active === page.ref ? 'active' : 'null'
+                                        active === page.path ? 'active' : 'null'
                                     }
                                 >
-                                    <NavLink to={`${page.ref}`}>
-                                        {page.text}
+                                    <NavLink to={`${page.path}`}>
+                                        {page.title}
                                     </NavLink>
                                 </li>
                             ))}
