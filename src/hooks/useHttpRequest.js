@@ -13,7 +13,8 @@ const useHttpRequest = ({ method, url, preventAutoFetch }) => {
       headers: {
         'Content-Type': 'application/json',
         authorization: 'token will be here later'
-      }
+      },
+      credentials: 'include'
     };
 
     if (payload && method !== 'GET') {

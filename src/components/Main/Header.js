@@ -2,14 +2,19 @@ import React, { useState } from 'react';
 import Logo from '../../images/logo.png';
 import { NavLink } from 'react-router-dom';
 import useHttpRequest from '../../hooks/useHttpRequest';
+import isUser from '../../hooks/isUser';
 
 function Header () {
   const {
     state: { error, data, loading }
   } = useHttpRequest({
     method: 'GET',
-    url: '/categories/'
+    url: 'categories/'
   });
+
+  const {
+    state: { status }
+  } = isUser();
 
   const navMenu = [
     { path: '/', title: 'Home' },
@@ -19,7 +24,6 @@ function Header () {
 
   const [active, setActive] = useState(window.location.pathname);
   const [searchTerm, setSearchTerm] = useState();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
         <header className="header-section">
@@ -56,7 +60,7 @@ function Header () {
                         <div className="col-lg-3 text-right col-md-3">
                             <ul className="nav-right">
                                 {' '}
-                                {isLoggedIn
+                                {status
                                   ? (
                                     <>
                                         <i className="fa fa-cart-arrow-down"></i>{' '}
@@ -64,21 +68,19 @@ function Header () {
                                         <br />
                                         <i className="fa fa-user-circle"></i>{' '}
                                         Profile <br />
-                                        <div
-                                            onClick={() => setIsLoggedIn(false)}
-                                        >
+                                        <NavLink to="/logout">
                                             <i className="fa fa-sign-out"></i>{' '}
                                             Logout
-                                        </div>
+                                        </NavLink>
                                     </>
                                     )
                                   : (
                                     <>
-                                        <div
-                                            onClick={() => setIsLoggedIn(true)}
-                                        >
-                                            <i className="fa fa-sign-in"></i>{' '}
-                                            Login{' '}
+                                        <div>
+                                            <NavLink to="/login">
+                                                <i className="fa fa-sign-in"></i>{' '}
+                                                Login{' '}
+                                            </NavLink>
                                         </div>
                                         <i className="fa fa-unlock-alt"></i>{' '}
                                         Register

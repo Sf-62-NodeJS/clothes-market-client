@@ -1,0 +1,79 @@
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import useHttpRequest from '../../hooks/useHttpRequest';
+import isUser from '../../hooks/isUser';
+
+const Login = () => {
+  const {
+    state: { status }
+  } = isUser();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  const navigate = useNavigate();
+
+  const { fetchRequest } = useHttpRequest({ method: 'POST', url: 'auth/' });
+
+  function loginHandler (event) {
+    event.preventDefault();
+    fetchRequest({ email, password });
+    navigate('/');
+  }
+
+  return status
+    ? (
+        navigate('/')
+      )
+    : (
+        <div className="register-login-section spad">
+            <div className="container">
+                <div className="row">
+                    <div className="col-lg-6 offset-lg-3">
+                        <div className="login-form">
+                            <h2>Login</h2>
+                            <form onSubmit={loginHandler}>
+                                <div className="group-input">
+                                    <label htmlFor="email">
+                                        Email address *
+                                    </label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        onChange={(e) =>
+                                          setEmail(e.target.value)
+                                        }
+                                        value={email}
+                                        required
+                                    />
+                                </div>
+                                <div className="group-input">
+                                    <label htmlFor="password">Password *</label>
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        onChange={(e) =>
+                                          setPassword(e.target.value)
+                                        }
+                                        value={password}
+                                        required
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    className="site-btn login-btn"
+                                >
+                                    Sign In
+                                </button>
+                            </form>
+                            <div className="switch-login">
+                                <Link to="/register">Or Create An Account</Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      );
+};
+
+export default Login;
