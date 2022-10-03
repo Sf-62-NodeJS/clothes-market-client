@@ -7,18 +7,23 @@ const Login = () => {
   const {
     state: { status }
   } = isUser();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
 
-  const { fetchRequest } = useHttpRequest({ method: 'POST', url: 'auth/' });
+  const {
+    fetchRequest,
+    state: { error }
+  } = useHttpRequest({ method: 'POST', url: 'auth/' });
 
-  function loginHandler (event) {
+  const loginHandler = (event) => {
     event.preventDefault();
     fetchRequest({ email, password });
-    navigate('/');
-  }
+  };
+
+  if (error) return navigate('/error');
 
   return status
     ? (
