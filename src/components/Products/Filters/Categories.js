@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import useHttpRequest from '../../../hooks/useHttpRequest';
 
 const Categories = () => {
@@ -17,7 +18,11 @@ const Categories = () => {
                 {loading && <li>Loading...</li>}
                 {data &&
                     data.map((category) => (
-                        <li key={category._id}>{category.name}</li>
+                        <li key={category._id}>
+                            <Link to={`/products?category=${category.name}`}>
+                                {category.name}
+                            </Link>
+                        </li>
                     ))}
             </ul>
         </div>
