@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Logo from '../../images/logo.png';
 import { NavLink } from 'react-router-dom';
 import useHttpRequest from '../../hooks/useHttpRequest';
-import isUser from '../../hooks/isUser';
+import useCookie from '../../hooks/useCookie';
 
 function Header () {
   const {
@@ -14,7 +14,7 @@ function Header () {
 
   const {
     state: { status }
-  } = isUser();
+  } = useCookie();
 
   const navMenu = [
     { path: '/', title: 'Home' },

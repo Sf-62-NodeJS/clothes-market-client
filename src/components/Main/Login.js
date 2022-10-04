@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useHttpRequest from '../../hooks/useHttpRequest';
-import isUser from '../../hooks/isUser';
+import useCookie from '../../hooks/useCookie';
 
 const Login = () => {
-  const {
-    state: { status }
-  } = isUser();
-
+  const [user, setUser] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -18,14 +15,20 @@ const Login = () => {
     state: { error }
   } = useHttpRequest({ method: 'POST', url: 'auth/' });
 
-  const loginHandler = (event) => {
+  const useLoginHandler = (event) => {
     event.preventDefault();
     fetchRequest({ email, password });
+
+    const {
+      state: { status }
+    } = useCookie();
+
+    setUser(status);
   };
 
   if (error) return navigate('/error');
 
-  return status
+  return user
     ? (
         navigate('/')
       )
@@ -36,7 +39,7 @@ const Login = () => {
                     <div className="col-lg-6 offset-lg-3">
                         <div className="login-form">
                             <h2>Login</h2>
-                            <form onSubmit={loginHandler}>
+                            <form onSubmit={useLoginHandler}>
                                 <div className="group-input">
                                     <label htmlFor="email">
                                         Email address *

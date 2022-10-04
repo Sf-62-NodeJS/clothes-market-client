@@ -5,7 +5,11 @@ module.exports = {
     es2021: true,
     jest: true
   },
-  extends: ['standard', 'plugin:react/recommended'],
+  extends: [
+    'standard',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended'
+  ],
   parserOptions: {
     ecmaVersion: 'latest'
   },
@@ -18,6 +22,8 @@ module.exports = {
     'consistent-return': 0,
     'jest/no-try-expect': 0,
     'jest/no-test-callback': 0,
-    'comma-dangle': ['warn', 'never']
+    'comma-dangle': ['warn', 'never'],
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn'
   }
 };

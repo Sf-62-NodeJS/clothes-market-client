@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Cookie from 'js-cookie';
 
-const isUser = () => {
+const useCookie = () => {
   const [state, setState] = useState({
     status: false
   });
@@ -24,4 +24,4 @@ const isUser = () => {
   return { state };
 };
 
-export default isUser;
+export default useCookie;
