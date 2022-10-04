@@ -7,7 +7,6 @@ import Header from '../Main/Header';
 import Login from '../Main/Login';
 import Error from '../Main/Error';
 import Logout from '../Main/Logout';
-import Products from '../Products/Products';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App () {
@@ -20,7 +19,7 @@ function App () {
                     <Route path="/login" element={<Login />}></Route>
                     <Route path="/logout" element={<Logout />}></Route>
                     <Route path="/error" element={<Error />}></Route>
-                    <Route path="/products" element={<Products />}></Route>
+                    <Route path="/products" element=""></Route>
                 </Routes>
             </main>
         </BrowserRouter>
