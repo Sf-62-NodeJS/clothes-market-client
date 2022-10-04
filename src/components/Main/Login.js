@@ -4,31 +4,28 @@ import useHttpRequest from '../../hooks/useHttpRequest';
 import useCookie from '../../hooks/useCookie';
 
 const Login = () => {
-  const [user, setUser] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
 
   const {
+    state: { status }
+  } = useCookie();
+
+  const {
     fetchRequest,
     state: { error }
   } = useHttpRequest({ method: 'POST', url: 'auth/' });
 
-  const useLoginHandler = (event) => {
+  const loginHandler = (event) => {
     event.preventDefault();
     fetchRequest({ email, password });
-
-    const {
-      state: { status }
-    } = useCookie();
-
-    setUser(status);
   };
 
   if (error) return navigate('/error');
 
-  return user
+  return status
     ? (
         navigate('/')
       )
@@ -39,7 +36,7 @@ const Login = () => {
                     <div className="col-lg-6 offset-lg-3">
                         <div className="login-form">
                             <h2>Login</h2>
-                            <form onSubmit={useLoginHandler}>
+                            <form onSubmit={loginHandler}>
                                 <div className="group-input">
                                     <label htmlFor="email">
                                         Email address *
