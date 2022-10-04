@@ -14,7 +14,7 @@ function Header () {
     { path: '/contact', title: 'Contact' }
   ];
 
-  const [active, setActive] = useState(window.location.pathname);
+  const [isActive, setIsActive] = useState(window.location.pathname);
   const [searchTerm, setSearchTerm] = useState();
 
   return (
@@ -60,7 +60,12 @@ function Header () {
                                         <br />
                                         <i className="fa fa-user-circle"></i>{' '}
                                         Profile <br />
-                                        <NavLink to="/logout">
+                                        <NavLink
+                                            to="/logout"
+                                            onClick={() =>
+                                              setIsActive('/logout')
+                                            }
+                                        >
                                             <i className="fa fa-sign-out"></i>{' '}
                                             Logout
                                         </NavLink>
@@ -69,7 +74,17 @@ function Header () {
                                   : (
                                     <>
                                         <div>
-                                            <NavLink to="/login">
+                                            <NavLink
+                                                to="/login"
+                                                style={
+                                                    isActive === '/login'
+                                                      ? { color: 'black' }
+                                                      : {}
+                                                }
+                                                onClick={() =>
+                                                  setIsActive('/login')
+                                                }
+                                            >
                                                 <i className="fa fa-sign-in"></i>{' '}
                                                 Login{' '}
                                             </NavLink>
@@ -90,9 +105,11 @@ function Header () {
                             {navMenu.map((page) => (
                                 <li
                                     key={page.path}
-                                    onClick={() => setActive(page.path)}
+                                    onClick={() => setIsActive(page.path)}
                                     className={
-                                        active === page.path ? 'active' : 'null'
+                                        isActive === page.path
+                                          ? 'active'
+                                          : 'null'
                                     }
                                 >
                                     <NavLink to={`${page.path}`}>

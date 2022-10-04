@@ -7,11 +7,11 @@ import Header from '../Main/Header';
 import Login from '../Main/Login';
 import Error from '../Main/Error';
 import Logout from '../Main/Logout';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 function App () {
   return (
-        <BrowserRouter>
+        <>
             <Header />
             <main>
                 <Routes>
@@ -22,7 +22,7 @@ function App () {
                     <Route path="/products" element=""></Route>
                 </Routes>
             </main>
-        </BrowserRouter>
+        </>
   );
 }
 
