@@ -85,36 +85,6 @@ function Header () {
             </div>
             <div className="nav-item">
                 <div className="container">
-                    {/* <div className="nav-depart">
-                        <div className="depart-btn">
-                            <i className="ti-menu"></i>
-                            <span>All categories</span>
-                            <ul className="depart-hover">
-                                {error && <li>Error...</li>}
-                                {loading && <li>Loading...</li>}
-                                {data &&
-                                    data.map((category) => (
-                                        <li
-                                            key={category._id}
-                                            onClick={() =>
-                                              setActive(category._id)
-                                            }
-                                            className={
-                                                active === category._id
-                                                  ? 'active'
-                                                  : 'null'
-                                            }
-                                        >
-                                            <NavLink
-                                                to={`/products/?category=${category.name}`}
-                                            >
-                                                {category.name}
-                                            </NavLink>
-                                        </li>
-                                    ))}
-                            </ul>
-                        </div>
-                    </div> */}
                     <nav className="nav-menu">
                         <ul>
                             {navMenu.map((page) => (
