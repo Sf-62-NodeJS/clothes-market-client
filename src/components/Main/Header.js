@@ -1,25 +1,17 @@
 import React, { useState } from 'react';
 import Logo from '../../images/logo.png';
 import { NavLink } from 'react-router-dom';
-import useHttpRequest from '../../hooks/useHttpRequest';
 import useCookie from '../../hooks/useCookie';
 
 function Header () {
-  const {
-    state: { error, data, loading }
-  } = useHttpRequest({
-    method: 'GET',
-    url: 'categories/'
-  });
-
   const {
     state: { status }
   } = useCookie();
 
   const navMenu = [
     { path: '/', title: 'Home' },
-    { path: '/Shop', title: 'Shop' },
-    { path: '/Contact', title: 'Contact' }
+    { path: '/products', title: 'Shop' },
+    { path: '/contact', title: 'Contact' }
   ];
 
   const [active, setActive] = useState(window.location.pathname);
@@ -93,7 +85,7 @@ function Header () {
             </div>
             <div className="nav-item">
                 <div className="container">
-                    <div className="nav-depart">
+                    {/* <div className="nav-depart">
                         <div className="depart-btn">
                             <i className="ti-menu"></i>
                             <span>All categories</span>
@@ -122,7 +114,7 @@ function Header () {
                                     ))}
                             </ul>
                         </div>
-                    </div>
+                    </div> */}
                     <nav className="nav-menu">
                         <ul>
                             {navMenu.map((page) => (
