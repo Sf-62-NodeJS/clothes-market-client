@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useHttpRequest from '../../hooks/useHttpRequest';
 import useCookie from '../../hooks/useCookie';
@@ -10,7 +10,8 @@ const Login = () => {
   const navigate = useNavigate();
 
   const {
-    state: { status }
+    getCookie,
+    state: { isLoggedIn }
   } = useCookie();
 
   const {
@@ -25,7 +26,11 @@ const Login = () => {
 
   if (error) return navigate('/error');
 
-  return status
+  useEffect(() => {
+    getCookie();
+  });
+
+  return isLoggedIn
     ? (
         navigate('/')
       )

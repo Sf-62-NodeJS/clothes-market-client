@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Logo from '../../images/logo.png';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import useCookie from '../../hooks/useCookie';
 
 function Header () {
+  const navigate = useNavigate();
+
   const {
-    state: { status }
+    getCookie,
+    state: { isLoggedIn }
   } = useCookie();
 
   const navMenu = [
@@ -15,7 +18,15 @@ function Header () {
   ];
 
   const [isActive, setIsActive] = useState(window.location.pathname);
-  const [searchTerm, setSearchTerm] = useState();
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const search = (searchTerm) => {
+    navigate(`/products/filter?name=${searchTerm}`);
+  };
+
+  useEffect(() => {
+    getCookie();
+  }, []);
 
   return (
         <header className="header-section">
@@ -42,7 +53,7 @@ function Header () {
                                     />
                                     <button
                                         type="button"
-                                        onClick={() => searchTerm}
+                                        onClick={() => search(searchTerm)}
                                     >
                                         <i className="ti-search"></i>
                                     </button>
@@ -52,7 +63,7 @@ function Header () {
                         <div className="col-lg-3 text-right col-md-3">
                             <ul className="nav-right">
                                 {' '}
-                                {status
+                                {isLoggedIn
                                   ? (
                                     <>
                                         <i className="fa fa-cart-arrow-down"></i>{' '}

@@ -1,27 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Cookie from 'js-cookie';
 
 const useCookie = () => {
   const [state, setState] = useState({
-    status: false
+    isLoggedIn: false
   });
 
   const getCookie = () => {
-    setState(() => ({ status: false }));
     const cookie = Cookie.get('connect.sid');
 
     if (cookie) {
       setState(() => ({
-        status: true
+        isLoggedIn: true
       }));
     }
   };
 
-  useEffect(() => {
-    getCookie();
-  }, []);
+  const removeCookie = () => {
+    Cookie.remove('connect.sid');
 
-  return { state };
+    setState(() => ({ isLoggedIn: false }));
+  };
+
+  return { state, getCookie, removeCookie };
 };
 
 export default useCookie;
