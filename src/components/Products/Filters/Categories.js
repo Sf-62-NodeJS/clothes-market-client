@@ -19,7 +19,9 @@ const Categories = () => {
                 {data &&
                     data.map((category) => (
                         <li key={category._id}>
-                            <Link to={`/products?category=${category.name}`}>
+                            <Link
+                                to={`/products/filter?category=${category.name}`}
+                            >
                                 {category.name}
                             </Link>
                         </li>

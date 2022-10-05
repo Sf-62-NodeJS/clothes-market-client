@@ -1,32 +1,13 @@
 import React from 'react';
 import Filters from './Filters';
 import useHttpRequest from '../../hooks/useHttpRequest';
-import { useSearchParams } from 'react-router-dom';
 
-const Products = () => {
-  const searchParams = useSearchParams();
-
-  const category = searchParams.get('category');
-  const size = searchParams.get('size');
-  const minPrice = searchParams.get('minPrice');
-  const maxPrice = searchParams.get('maxPrice');
-
-  const searchUrl = () => {
-    const searchUrl = ['products/?'];
-
-    if (category) searchUrl.push(`category=${category}`);
-    if (size) searchUrl.push(`sizes=${size}`);
-    if (minPrice) searchUrl.push(`minPrice=${minPrice}`);
-    if (maxPrice) searchUrl.push(`maxPrice=${maxPrice}`);
-
-    return searchUrl.join('');
-  };
-
+const AllProducts = () => {
   const {
     state: { error, data, loading }
   } = useHttpRequest({
     method: 'GET',
-    url: searchUrl
+    url: 'products/'
   });
 
   return (
@@ -93,4 +74,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default AllProducts;
