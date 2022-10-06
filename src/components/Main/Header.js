@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Logo from '../../images/logo.png';
-import { NavLink, useNavigate } from 'react-router-dom';
-import useCookie from '../../hooks/useCookie';
+import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
+import useHttpRequest from '../../hooks/useHttpRequest';
 
 function Header () {
   const navigate = useNavigate();
-
-  const {
-    getCookie,
-    state: { isLoggedIn }
-  } = useCookie();
+  const location = useLocation();
 
   const navMenu = [
     { path: '/', title: 'Home' },
@@ -17,16 +13,22 @@ function Header () {
     { path: '/contact', title: 'Contact' }
   ];
 
-  const [isActive, setIsActive] = useState(window.location.pathname);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const search = (searchTerm) => {
-    navigate(`/products/filter?name=${searchTerm}`);
-  };
+  const {
+    fetchRequest,
+    state: { error, data, loading }
+  } = useHttpRequest({
+    method: 'GET',
+    url: `products/?name=${searchTerm}`,
+    preventAutoFetch: true
+  });
 
-  useEffect(() => {
-    getCookie();
-  }, []);
+  const search = () => {
+    if (searchTerm.length > 0) {
+      fetchRequest();
+    }
+  };
 
   return (
         <header className="header-section">
@@ -47,13 +49,43 @@ function Header () {
                                         type="text"
                                         placeholder="What do you need?"
                                         value={searchTerm}
-                                        onChange={(e) =>
-                                          setSearchTerm(e.target.value)
-                                        }
+                                        onChange={function (e) {
+                                          setSearchTerm(e.target.value);
+                                          search();
+                                        }}
                                     />
+                                    {error && navigate('/error')}
+                                    {loading && (
+                                        <ul>
+                                            <li>Loading</li>
+                                        </ul>
+                                    )}
+                                    {searchTerm &&
+                                        data &&
+                                        data.map((product) => (
+                                            <ul key={product._id}>
+                                                <li
+                                                    key={product._id}
+                                                    onClick={() =>
+                                                      setSearchTerm('')
+                                                    }
+                                                >
+                                                    <Link
+                                                        to={`/products/${product._id}`}
+                                                    >
+                                                        {product.name}
+                                                    </Link>
+                                                </li>
+                                            </ul>
+                                        ))}
                                     <button
                                         type="button"
-                                        onClick={() => search(searchTerm)}
+                                        onClick={function () {
+                                          navigate(
+                                                `/products/filter?name=${searchTerm}`
+                                          );
+                                          setSearchTerm('');
+                                        }}
                                     >
                                         <i className="ti-search"></i>
                                     </button>
@@ -63,45 +95,39 @@ function Header () {
                         <div className="col-lg-3 text-right col-md-3">
                             <ul className="nav-right">
                                 {' '}
-                                {isLoggedIn
+                                {sessionStorage.getItem('cookieId')
                                   ? (
                                     <>
-                                        <i className="fa fa-cart-arrow-down"></i>{' '}
-                                        Shopping Cart
+                                        <li>
+                                            <i className="fa fa-cart-arrow-down"></i>{' '}
+                                            Shopping Cart
+                                        </li>
                                         <br />
-                                        <i className="fa fa-user-circle"></i>{' '}
-                                        Profile <br />
-                                        <NavLink
-                                            to="/logout"
-                                            onClick={() =>
-                                              setIsActive('/logout')
-                                            }
-                                        >
-                                            <i className="fa fa-sign-out"></i>{' '}
-                                            Logout
-                                        </NavLink>
+                                        <li>
+                                            <i className="fa fa-user-circle"></i>{' '}
+                                            Profile
+                                        </li>
+                                        <br />
+                                        <li>
+                                            <NavLink to="/logout">
+                                                <i className="fa fa-sign-out"></i>{' '}
+                                                Logout
+                                            </NavLink>
+                                        </li>
                                     </>
                                     )
                                   : (
                                     <>
-                                        <div>
-                                            <NavLink
-                                                to="/login"
-                                                style={
-                                                    isActive === '/login'
-                                                      ? { color: 'black' }
-                                                      : {}
-                                                }
-                                                onClick={() =>
-                                                  setIsActive('/login')
-                                                }
-                                            >
+                                        <li>
+                                            <NavLink to="/login">
                                                 <i className="fa fa-sign-in"></i>{' '}
                                                 Login{' '}
                                             </NavLink>
-                                        </div>
-                                        <i className="fa fa-unlock-alt"></i>{' '}
-                                        Register
+                                        </li>
+                                        <li>
+                                            <i className="fa fa-unlock-alt"></i>{' '}
+                                            Register
+                                        </li>
                                     </>
                                     )}
                             </ul>
@@ -116,9 +142,8 @@ function Header () {
                             {navMenu.map((page) => (
                                 <li
                                     key={page.path}
-                                    onClick={() => setIsActive(page.path)}
                                     className={
-                                        isActive === page.path
+                                        location.pathname === page.path
                                           ? 'active'
                                           : 'null'
                                     }

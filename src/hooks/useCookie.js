@@ -11,9 +11,11 @@ const useCookie = () => {
 
     if (cookie) {
       setState(() => ({
-        isLoggedIn: true
+        isLoggedIn: cookie
       }));
     }
+
+    return cookie;
   };
 
   const removeCookie = () => {

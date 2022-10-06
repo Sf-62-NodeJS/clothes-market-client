@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useHttpRequest from '../../hooks/useHttpRequest';
 import useCookie from '../../hooks/useCookie';
@@ -10,16 +10,12 @@ const Logout = () => {
 
   useEffect(() => {
     removeCookie();
+    sessionStorage.removeItem('cookieId');
   }, []);
 
   const navigate = useNavigate();
 
-  return (
-        <div>
-            You are logged out successfully!
-            <button onClick={() => navigate('/')}>Go to Main page</button>
-        </div>
-  );
+  return navigate('/');
 };
 
 export default Logout;

@@ -28,6 +28,7 @@ const Login = () => {
 
   useEffect(() => {
     getCookie();
+    sessionStorage.setItem('cookieId', isLoggedIn);
   });
 
   return isLoggedIn
