@@ -14,8 +14,8 @@ describe('Header component test', () => {
         return store[key];
       },
 
-      removeItem (key) {
-        store.cookieId = null;
+      setItem (key) {
+        store.cookieId = 'false';
         return store[key];
       }
     };

@@ -28,6 +28,7 @@ const Search = () => {
                 <div className="input-group">
                     <input
                         type="text"
+                        id="search"
                         placeholder="What do you need?"
                         value={searchTerm}
                         onChange={function (e) {

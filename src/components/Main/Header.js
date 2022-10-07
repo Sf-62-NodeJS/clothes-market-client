@@ -24,7 +24,7 @@ function Header () {
   ];
 
   useEffect(() => {
-    if (sessionStorage?.getItem('cookieId') === (false || null)) {
+    if (sessionStorage?.getItem('cookieId') === 'false') {
       fetchRequest();
     }
   }, [sessionStorage.getItem('cookieId')]);
@@ -62,8 +62,9 @@ function Header () {
                                         <li
                                             onClick={function () {
                                               Cookie.remove('connect.sid');
-                                              sessionStorage.removeItem(
-                                                'cookieId'
+                                              sessionStorage.setItem(
+                                                'cookieId',
+                                                'false'
                                               );
                                             }}
                                         >
