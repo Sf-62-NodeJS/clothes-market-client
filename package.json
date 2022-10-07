@@ -42,7 +42,8 @@
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/node_modules/",
-      "<rootDir>/build/"
+      "<rootDir>/build/",
+      "src/index.js"
     ],
     "coverageReporters": [
       "html",

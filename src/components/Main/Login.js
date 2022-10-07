@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useHttpRequest from '../../hooks/useHttpRequest';
-import useCookie from '../../hooks/useCookie';
+import Cookie from 'js-cookie';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
-
-  const {
-    getCookie,
-    state: { isLoggedIn }
-  } = useCookie();
+  const isCookie = Cookie.get('connect.sid');
+  const sessionCookie = sessionStorage.getItem('cookieId');
 
   const {
     fetchRequest,
@@ -22,16 +19,12 @@ const Login = () => {
   const loginHandler = (event) => {
     event.preventDefault();
     fetchRequest({ email, password });
+    sessionStorage.setItem('cookieId', isCookie);
   };
 
   if (error) return navigate('/error');
 
-  useEffect(() => {
-    getCookie();
-    sessionStorage.setItem('cookieId', isLoggedIn);
-  });
-
-  return isLoggedIn
+  return isCookie === sessionCookie
     ? (
         navigate('/')
       )

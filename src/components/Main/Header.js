@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
-import Logo from '../../images/logo.png';
-import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import Cookie from 'js-cookie';
 import useHttpRequest from '../../hooks/useHttpRequest';
+import Logo from '../../images/logo.png';
+import Search from './Search';
 
 function Header () {
-  const navigate = useNavigate();
   const location = useLocation();
+
+  const isCookie = Cookie.get('connect.sid');
+  const sessionCookie = sessionStorage.getItem('cookieId');
+
+  const { fetchRequest } = useHttpRequest({
+    method: 'GET',
+    url: 'auth/logout/',
+    preventAutoFetch: true
+  });
 
   const navMenu = [
     { path: '/', title: 'Home' },
@@ -13,22 +23,11 @@ function Header () {
     { path: '/contact', title: 'Contact' }
   ];
 
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const {
-    fetchRequest,
-    state: { error, data, loading }
-  } = useHttpRequest({
-    method: 'GET',
-    url: `products/?name=${searchTerm}`,
-    preventAutoFetch: true
-  });
-
-  const search = () => {
-    if (searchTerm.length > 0) {
+  useEffect(() => {
+    if (sessionStorage?.getItem('cookieId') === (false || null)) {
       fetchRequest();
     }
-  };
+  }, [sessionStorage.getItem('cookieId')]);
 
   return (
         <header className="header-section">
@@ -42,60 +41,10 @@ function Header () {
                                 </NavLink>
                             </div>
                         </div>
-                        <div className="col-lg-7 col-md-7">
-                            <div className="advanced-search">
-                                <div className="input-group">
-                                    <input
-                                        type="text"
-                                        placeholder="What do you need?"
-                                        value={searchTerm}
-                                        onChange={function (e) {
-                                          setSearchTerm(e.target.value);
-                                          search();
-                                        }}
-                                    />
-                                    {error && navigate('/error')}
-                                    {loading && (
-                                        <ul>
-                                            <li>Loading</li>
-                                        </ul>
-                                    )}
-                                    {searchTerm &&
-                                        data &&
-                                        data.map((product) => (
-                                            <ul key={product._id}>
-                                                <li
-                                                    key={product._id}
-                                                    onClick={() =>
-                                                      setSearchTerm('')
-                                                    }
-                                                >
-                                                    <Link
-                                                        to={`/products/${product._id}`}
-                                                    >
-                                                        {product.name}
-                                                    </Link>
-                                                </li>
-                                            </ul>
-                                        ))}
-                                    <button
-                                        type="button"
-                                        onClick={function () {
-                                          navigate(
-                                                `/products/filter?name=${searchTerm}`
-                                          );
-                                          setSearchTerm('');
-                                        }}
-                                    >
-                                        <i className="ti-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                        <Search />
                         <div className="col-lg-3 text-right col-md-3">
                             <ul className="nav-right">
-                                {' '}
-                                {sessionStorage.getItem('cookieId')
+                                {isCookie === sessionCookie
                                   ? (
                                     <>
                                         <li>
@@ -104,12 +53,21 @@ function Header () {
                                         </li>
                                         <br />
                                         <li>
-                                            <i className="fa fa-user-circle"></i>{' '}
-                                            Profile
+                                            <NavLink to="/profile">
+                                                <i className="fa fa-user-circle"></i>{' '}
+                                                Profile
+                                            </NavLink>
                                         </li>
                                         <br />
-                                        <li>
-                                            <NavLink to="/logout">
+                                        <li
+                                            onClick={function () {
+                                              Cookie.remove('connect.sid');
+                                              sessionStorage.removeItem(
+                                                'cookieId'
+                                              );
+                                            }}
+                                        >
+                                            <NavLink to="/">
                                                 <i className="fa fa-sign-out"></i>{' '}
                                                 Logout
                                             </NavLink>
