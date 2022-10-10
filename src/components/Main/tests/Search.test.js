@@ -30,6 +30,28 @@ describe('Search component tests', () => {
     render(<Search />, { wrapper: BrowserRouter });
   });
 
+  it('should show loading on screen', () => {
+    const searchBar = screen.getByRole('textbox');
+    fireEvent.change(searchBar, { target: { value: 'test' } });
+
+    const loading = screen.getByText(/loading/i);
+
+    expect(loading).toBeInTheDocument();
+
+    state.loading = false;
+  });
+
+  it('should write in search bar and click on search result', async () => {
+    const searchBar = screen.getByRole('textbox');
+    fireEvent.change(searchBar, { target: { value: 'name' } });
+
+    const result = screen.getByText(/name/i);
+    expect(searchBar.value).toEqual('name');
+
+    fireEvent.click(result);
+    expect(searchBar.value).toEqual('');
+  });
+
   it('should write in search bar and click on search button', async () => {
     const searchBar = screen.getByRole('textbox');
     const button = screen.getByRole('button');
@@ -51,17 +73,5 @@ describe('Search component tests', () => {
     fireEvent.change(searchBar, { target: { value: 'test' } });
 
     expect(mockedUsedNavigate).toHaveBeenCalled();
-
-    state.error = null;
-    state.loading = true;
-  });
-
-  it('should show loading on screen', () => {
-    const searchBar = screen.getByRole('textbox');
-    fireEvent.change(searchBar, { target: { value: 'test' } });
-
-    const loading = screen.getByText(/loading/i);
-
-    expect(loading).toBeInTheDocument();
   });
 });

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useHttpRequest from '../../hooks/useHttpRequest';
 
@@ -22,6 +22,10 @@ const Search = () => {
     }
   };
 
+  useEffect(() => {
+    search();
+  }, [searchTerm]);
+
   return (
         <div className="col-lg-7 col-md-7">
             <div className="advanced-search">
@@ -31,10 +35,7 @@ const Search = () => {
                         id="search"
                         placeholder="What do you need?"
                         value={searchTerm}
-                        onChange={function (e) {
-                          setSearchTerm(e.target.value);
-                          search();
-                        }}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                     />
                     {error && navigate('/error')}
                     {loading && (
