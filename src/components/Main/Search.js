@@ -59,7 +59,7 @@ const Search = () => {
                     <button
                         type="button"
                         onClick={function () {
-                          navigate(`/products/filter?name=${searchTerm}`);
+                          navigate(`/products?name=${searchTerm}`);
                           setSearchTerm('');
                         }}
                     >

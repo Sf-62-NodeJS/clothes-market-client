@@ -2,15 +2,18 @@ import React from 'react';
 import { screen, render, fireEvent } from '@testing-library/react';
 import Search from '../Search';
 import { BrowserRouter } from 'react-router-dom';
-import useHttpRequest from '../../../hooks/useHttpRequest';
-
-jest.mock('../../../hooks/useHttpRequest', () => ({
-  ...jest.requireActual('../../../hooks/useHttpRequest'),
-  __esModule: true,
-  default: jest.fn()
-}));
 
 const mockedUsedNavigate = jest.fn();
+const state = {
+  data: [{ _id: 'id', name: 'name' }],
+  loading: true,
+  error: null
+};
+
+jest.mock('../../../hooks/useHttpRequest', () => () => ({
+  fetchRequest: jest.fn(),
+  state
+}));
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -38,28 +41,24 @@ describe('Search component tests', () => {
     fireEvent.click(button);
     expect(searchBar.value).toEqual('');
     expect(mockedUsedNavigate).toHaveBeenCalledTimes(1);
+
+    state.data = null;
+    state.error = {};
   });
 
   it('should call navigate when error', () => {
     const searchBar = screen.getByRole('textbox');
     fireEvent.change(searchBar, { target: { value: 'test' } });
 
-    useHttpRequest.mockImplementationOnce(() => ({
-      fetchRequest: jest.fn(),
-      state: { data: null, loading: false, error: {} }
-    }));
+    expect(mockedUsedNavigate).toHaveBeenCalled();
 
-    expect(mockedUsedNavigate).toHaveBeenCalledTimes(1);
+    state.error = null;
+    state.loading = true;
   });
 
   it('should show loading on screen', () => {
     const searchBar = screen.getByRole('textbox');
     fireEvent.change(searchBar, { target: { value: 'test' } });
-
-    useHttpRequest.mockImplementationOnce(() => ({
-      fetchRequest: jest.fn(),
-      state: { data: null, loading: true, error: null }
-    }));
 
     const loading = screen.getByText(/loading/i);
 
