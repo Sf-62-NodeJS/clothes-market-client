@@ -2,6 +2,13 @@ import React from 'react';
 import { screen, render, fireEvent } from '@testing-library/react';
 import Search from '../Search';
 import { BrowserRouter } from 'react-router-dom';
+import useHttpRequest from '../../../hooks/useHttpRequest';
+
+jest.mock('../../../hooks/useHttpRequest', () => ({
+  ...jest.requireActual('../../../hooks/useHttpRequest'),
+  __esModule: true,
+  default: jest.fn()
+}));
 
 const mockedUsedNavigate = jest.fn();
 
@@ -31,5 +38,31 @@ describe('Search component tests', () => {
     fireEvent.click(button);
     expect(searchBar.value).toEqual('');
     expect(mockedUsedNavigate).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call navigate when error', () => {
+    const searchBar = screen.getByRole('textbox');
+    fireEvent.change(searchBar, { target: { value: 'test' } });
+
+    useHttpRequest.mockImplementationOnce(() => ({
+      fetchRequest: jest.fn(),
+      state: { data: null, loading: false, error: {} }
+    }));
+
+    expect(mockedUsedNavigate).toHaveBeenCalledTimes(1);
+  });
+
+  it('should show loading on screen', () => {
+    const searchBar = screen.getByRole('textbox');
+    fireEvent.change(searchBar, { target: { value: 'test' } });
+
+    useHttpRequest.mockImplementationOnce(() => ({
+      fetchRequest: jest.fn(),
+      state: { data: null, loading: true, error: null }
+    }));
+
+    const loading = screen.getByText(/loading/i);
+
+    expect(loading).toBeInTheDocument();
   });
 });
