@@ -4,6 +4,17 @@ import Login from '../Login';
 import { BrowserRouter } from 'react-router-dom';
 import Cookie from 'js-cookie';
 
+const state = {
+  data: [{ _id: 'id', email: 'email@email.com', password: 'password' }],
+  loading: true,
+  error: null
+};
+
+jest.mock('../../../hooks/useHttpRequest', () => () => ({
+  fetchRequest: jest.fn(),
+  state
+}));
+
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
   useNavigate: () => jest.fn()
@@ -35,19 +46,19 @@ describe('Login component test', () => {
       value: 'myCookie=0123456789'
     });
 
-    Cookie.get = jest.fn().mockImplementation(() => '0123456789');
+    Cookie.get = jest.fn().mockImplementationOnce(() => '0123456789');
 
-    Cookie.remove = jest.fn().mockImplementation(() => true);
+    Cookie.remove = jest.fn().mockImplementationOnce(() => true);
+
+    render(<Login />, { wrapper: BrowserRouter });
   });
 
   it('renders password label text', () => {
-    render(<Login />, { wrapper: BrowserRouter });
     const input = screen.getByLabelText('Password *');
     expect(input).toBeInTheDocument();
   });
 
   it('inputs email and password', () => {
-    render(<Login />, { wrapper: BrowserRouter });
     const email = screen.getByRole('textbox', 'email');
     const password = screen.getByRole('password', 'password');
 
@@ -57,5 +68,15 @@ describe('Login component test', () => {
 
     expect(email.value).toEqual('email@email.com');
     expect(password.value).toEqual('password');
+
+    state.error = {};
+    state.loading = false;
+    state.data = null;
+  });
+
+  it('inputs email and password', () => {
+    Cookie.get = jest.fn().mockImplementationOnce(() => '123456789');
+
+    expect(sessionStorage.getItem('cookieId')).not.toEqual('123456789');
   });
 });
