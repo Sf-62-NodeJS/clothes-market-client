@@ -1,19 +1,70 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Price = () => {
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
+
+  const navigate = useNavigate();
+
+  const query = () => {
+    const locationHref = window.location.href;
+    const locationSearch = window.location.search;
+    const urlParams = new URLSearchParams(locationSearch);
+    const minPriceParam = urlParams.get('minPrice');
+    const maxPriceParam = urlParams.get('maxPrice');
+
+    if (minPrice || maxPrice) {
+      if (!locationHref.includes('?')) {
+        return navigate(`?minPrice=${minPrice}&maxPrice=${maxPrice}`);
+      }
+
+      if (/minPrice/.test(locationSearch) && minPriceParam !== minPrice) {
+        return navigate(locationSearch.replace(minPriceParam, minPrice));
+      }
+
+      if (/maxPrice/.test(locationSearch) && maxPriceParam !== maxPrice) {
+        return navigate(locationSearch.replace(maxPriceParam, maxPrice));
+      }
+
+      if (locationHref.includes('?')) {
+        return navigate(
+          locationSearch.concat(
+            '&',
+                        `minPrice=${minPrice}&maxPrice=${maxPrice}`
+          )
+        );
+      }
+    }
+  };
+
   return (
         <div className="filter-widget">
             <h4 className="fw-title">Price</h4>
             <div className="filter-range-wrap">
                 <div className="range-slider">
                     <div className="price-input">
-                        <input type="number" min="0" id="minamount" />
-                        <input type="number" min="0" id="maxamount" />
+                        <input
+                            type="number"
+                            min="0"
+                            id="minPrice"
+                            title="minPrice"
+                            value={minPrice}
+                            onChange={(e) => setMinPrice(e.target.value)}
+                        />
+                        <input
+                            type="number"
+                            min="10"
+                            id="maxPrice"
+                            title="maxPrice"
+                            value={maxPrice}
+                            onChange={(e) => setMaxPrice(e.target.value)}
+                        />
                     </div>
                 </div>
-                <a href="#" className="filter-btn">
-                    Filter
-                </a>
+            </div>
+            <div onClick={query} title="filter" className="filter-btn">
+                Filter Price
             </div>
         </div>
   );

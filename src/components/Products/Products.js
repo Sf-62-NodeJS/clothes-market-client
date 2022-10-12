@@ -1,14 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Filters from './Filters';
 import useHttpRequest from '../../hooks/useHttpRequest';
+import { useSearchParams } from 'react-router-dom';
 
-const AllProducts = () => {
+const Products = () => {
+  // eslint-disable-next-line no-unused-vars
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const name = searchParams.get('name') || '';
+  const category = searchParams.get('category') || '';
+  const sizes = searchParams.get('sizes') || '';
+  const minPrice = searchParams.get('minPrice') || '';
+  const maxPrice = searchParams.get('maxPrice') || '';
+
   const {
+    fetchRequest,
     state: { error, data, loading }
   } = useHttpRequest({
     method: 'GET',
-    url: 'products/'
+    url: `products/?name=${name}&category=${category}&sizes=${sizes}&minPrice=${minPrice}&maxPrice=${maxPrice}`
   });
+
+  useEffect(() => {
+    fetchRequest();
+  }, [category, sizes, minPrice, maxPrice]);
 
   return (
         <section className="product-shop spad">
@@ -29,7 +44,7 @@ const AllProducts = () => {
                                             <div className="product-item">
                                                 <div className="pi-pic">
                                                     <img
-                                                        src={`${process.env.REACT_APP_SERVER_URL}uploads/images/${product.image}`}
+                                                        src={`${process.env.REACT_APP_SERVER_URL}image/${product.image}`}
                                                         alt=""
                                                     />
                                                     <ul>
@@ -74,4 +89,4 @@ const AllProducts = () => {
   );
 };
 
-export default AllProducts;
+export default Products;

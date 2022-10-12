@@ -10,6 +10,23 @@ const Categories = () => {
     url: 'categories/'
   });
 
+  const query = (name) => {
+    const locationHref = window.location.href;
+    const locationSearch = window.location.search;
+    const urlParams = new URLSearchParams(locationSearch);
+
+    if (!locationHref.includes('?')) {
+      return `?category=${name}`;
+    }
+
+    if (locationHref.includes('category')) {
+      const category = urlParams.get('category');
+      return locationSearch.replace(category, name);
+    }
+
+    return locationSearch.concat('&', `category=${name}`);
+  };
+
   return (
         <div className="filter-widget">
             <h4 className="fw-title">Categories</h4>
@@ -19,9 +36,7 @@ const Categories = () => {
                 {data &&
                     data.map((category) => (
                         <li key={category._id}>
-                            <Link
-                                to={`/products/filter?category=${category.name}`}
-                            >
+                            <Link to={query(category.name)}>
                                 {category.name}
                             </Link>
                         </li>
