@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Price = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
 
-  const navigate = useNavigate();
-
   const query = () => {
-    const locationHref = window.location.href;
-    const locationSearch = window.location.search;
+    const locationSearch = location.search;
     const urlParams = new URLSearchParams(locationSearch);
     const minPriceParam = urlParams.get('minPrice');
     const maxPriceParam = urlParams.get('maxPrice');
 
     if (minPrice || maxPrice) {
-      if (!locationHref.includes('?')) {
+      if (!locationSearch) {
         return navigate(`?minPrice=${minPrice}&maxPrice=${maxPrice}`);
       }
 
@@ -27,14 +27,12 @@ const Price = () => {
         return navigate(locationSearch.replace(maxPriceParam, maxPrice));
       }
 
-      if (locationHref.includes('?')) {
-        return navigate(
-          locationSearch.concat(
-            '&',
-                        `minPrice=${minPrice}&maxPrice=${maxPrice}`
-          )
-        );
-      }
+      return navigate(
+        locationSearch.concat(
+          '&',
+                    `minPrice=${minPrice}&maxPrice=${maxPrice}`
+        )
+      );
     }
   };
 

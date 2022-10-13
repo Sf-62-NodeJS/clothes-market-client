@@ -1,8 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import useHttpRequest from '../../../hooks/useHttpRequest';
 
 const Categories = () => {
+  const location = useLocation();
+
   const {
     state: { error, data, loading }
   } = useHttpRequest({
@@ -11,15 +13,14 @@ const Categories = () => {
   });
 
   const query = (name) => {
-    const locationHref = window.location.href;
-    const locationSearch = window.location.search;
+    const locationSearch = location.search;
     const urlParams = new URLSearchParams(locationSearch);
 
-    if (!locationHref.includes('?')) {
+    if (!locationSearch) {
       return `?category=${name}`;
     }
 
-    if (locationHref.includes('category')) {
+    if (locationSearch.includes('category')) {
       const category = urlParams.get('category');
       return locationSearch.replace(category, name);
     }
@@ -31,7 +32,7 @@ const Categories = () => {
         <div className="filter-widget">
             <h4 className="fw-title">Categories</h4>
             <ul className="filter-catagories">
-                {error && <li>Error...</li>}
+                {error && <li title="error">Error...</li>}
                 {loading && <li>Loading...</li>}
                 {data &&
                     data.map((category) => (

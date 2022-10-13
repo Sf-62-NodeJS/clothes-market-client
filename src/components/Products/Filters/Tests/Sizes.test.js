@@ -3,7 +3,16 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import Sizes from '../Sizes';
 import { BrowserRouter } from 'react-router-dom';
 
-const savedLocation = window.location;
+const mockUseLocationValue = {
+  pathname: 'localhost:3000/example',
+  search: '',
+  hash: '',
+  state: null
+};
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLocation: () => mockUseLocationValue
+}));
 
 const state = {
   data: [
@@ -39,21 +48,12 @@ describe('Sizes', () => {
     render(<Sizes />, { wrapper: BrowserRouter });
   });
 
-  afterEach(() => {
-    window.location = savedLocation;
-  });
-
-  it('should render', () => {
-    const boxS = screen.getByRole('checkbox', { name: 'S' });
-
-    fireEvent.click(boxS);
-  });
-
   it('should render', () => {
     const boxS = screen.getByRole('checkbox', { name: 'S' });
     const boxM = screen.getByRole('checkbox', { name: 'M' });
 
     fireEvent.click(boxS);
     fireEvent.click(boxM);
+    fireEvent.click(boxS);
   });
 });

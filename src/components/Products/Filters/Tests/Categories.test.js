@@ -3,7 +3,16 @@ import Categories from '../Categories';
 import { screen, render, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 
-const savedLocation = window.location;
+const mockUseLocationValue = {
+  pathname: 'localhost:3000/example',
+  search: '?something',
+  hash: '',
+  state: null
+};
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLocation: () => mockUseLocationValue
+}));
 
 const state = {
   data: [{ _id: 'id', name: 'name' }],
@@ -19,10 +28,6 @@ jest.mock('../../../../hooks/useHttpRequest', () => () => ({
 describe('Categories component test', () => {
   beforeEach(() => {
     render(<Categories />, { wrapper: BrowserRouter });
-  });
-
-  afterEach(() => {
-    window.location = savedLocation;
   });
 
   it('should render categories component', () => {
@@ -41,8 +46,7 @@ describe('Categories component test', () => {
   });
 
   it('should click on category in categories component', () => {
-    delete window.location;
-    window.location = { href: 'http://site.com/page?test=test' };
+    mockUseLocationValue.search = '';
     const category = screen.getByText(/name/i);
 
     fireEvent.click(category);
@@ -50,6 +54,7 @@ describe('Categories component test', () => {
   });
 
   it('should click on category in categories component', () => {
+    mockUseLocationValue.search = '?category=some';
     const category = screen.getByText(/name/i);
 
     fireEvent.click(category);

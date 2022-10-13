@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import useHttpRequest from '../../../hooks/useHttpRequest';
 
 const Sizes = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [checked, setChecked] = useState([]);
 
@@ -15,37 +16,37 @@ const Sizes = () => {
   });
 
   const query = () => {
-    const locationHref = window.location.href;
-    const locationSearch = window.location.search;
-    const urlParams = new URLSearchParams(locationSearch);
-    const sizeParam = urlParams.get('sizes');
+    const locationSearch = location.search;
     const sizes = checked.join(',');
 
     if (checked.length === 0 && locationSearch.includes('sizes')) {
-      return navigate(locationSearch.replace(/[?|&]sizes=[^&]*/, ''));
+      if (locationSearch.includes('&sizes')) {
+        return navigate(locationSearch.replace(/[&]sizes=[^&]*/, ''));
+      }
+      return navigate(locationSearch.replace(/[?]sizes=[^&]*/, '?'));
     }
 
-    if (checked.length !== 0 && !locationHref.includes('?')) {
+    if (checked.length !== 0 && !locationSearch) {
       return navigate(`?sizes=${sizes}`);
     }
 
     if (checked.length !== 0 && /sizes/.test(locationSearch)) {
-      return navigate(locationSearch.replace(sizeParam, sizes));
+      return navigate(
+        locationSearch.replace(/[&]sizes=[^&]*/, `&sizes=${sizes}`)
+      );
     }
 
-    if (checked.length !== 0 && locationHref.includes('?')) {
+    if (checked.length !== 0 && locationSearch) {
       return navigate(locationSearch.concat('&', `sizes=${sizes}`));
     }
+
+    return navigate('?');
   };
 
   const handleCheck = (event) => {
     if (event.target.checked) setChecked([...checked, event.target.value]);
 
-    if (!event.target.checked) {
-      setChecked(
-        checked.filter((checkbox) => checkbox !== event.target.name)
-      );
-    }
+    setChecked(checked.filter((checkbox) => checkbox !== event.target.name));
   };
 
   useEffect(() => {
@@ -64,6 +65,7 @@ const Sizes = () => {
                             <input
                                 type="checkbox"
                                 id={size._id}
+                                name={size.name}
                                 title={size.name}
                                 value={size.name}
                                 onChange={handleCheck}
