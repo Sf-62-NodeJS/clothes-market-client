@@ -14,10 +14,10 @@ function App () {
             <Header />
             <main>
                 <Routes>
-                    <Route path="/" element={<Home />}></Route>
-                    <Route path="/login" element={<Login />}></Route>
-                    <Route path="/error" element={<Error />}></Route>
-                    <Route path="/products" element=""></Route>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/error" element={<Error />} />
+                    <Route path="/products" element="" />
                 </Routes>
             </main>
         </BrowserRouter>
