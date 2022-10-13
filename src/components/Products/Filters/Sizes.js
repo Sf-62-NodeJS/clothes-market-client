@@ -21,7 +21,7 @@ const Sizes = () => {
 
     if (checked.length === 0 && locationSearch.includes('sizes')) {
       if (locationSearch.includes('&sizes')) {
-        return navigate(locationSearch.replace(/[&]sizes=[^&]*/, ''));
+        return navigate(locationSearch.replace(/&sizes=[^&]*/, ''));
       }
       return navigate(locationSearch.replace(/[?]sizes=[^&]*/, '?'));
     }
@@ -32,7 +32,7 @@ const Sizes = () => {
 
     if (checked.length !== 0 && /sizes/.test(locationSearch)) {
       return navigate(
-        locationSearch.replace(/[&]sizes=[^&]*/, `&sizes=${sizes}`)
+        locationSearch.replace(/&sizes=[^&]*/, `&sizes=${sizes}`)
       );
     }
 

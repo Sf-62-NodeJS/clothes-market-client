@@ -4,8 +4,7 @@ import useHttpRequest from '../../hooks/useHttpRequest';
 import { useSearchParams } from 'react-router-dom';
 
 const Products = () => {
-  // eslint-disable-next-line no-unused-vars
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const name = searchParams.get('name') || '';
   const category = searchParams.get('category') || '';
