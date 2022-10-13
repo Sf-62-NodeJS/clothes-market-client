@@ -9,6 +9,7 @@ const state = {
   loading: true,
   error: null
 };
+const mockedUsedNavigate = jest.fn();
 
 jest.mock('../../../hooks/useHttpRequest', () => () => ({
   fetchRequest: jest.fn(),
@@ -17,38 +18,12 @@ jest.mock('../../../hooks/useHttpRequest', () => () => ({
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
-  useNavigate: () => jest.fn()
+  useNavigate: () => mockedUsedNavigate
 }));
 
 describe('Login component test', () => {
-  const sessionStorageMock = (function () {
-    const store = { cookieId: '123456789' };
-
-    return {
-      getItem (key) {
-        return store[key];
-      },
-
-      setItem (key) {
-        store.cookieId = '0123456789';
-        return true;
-      }
-    };
-  })();
-
-  Object.defineProperty(window, 'sessionStorage', {
-    value: sessionStorageMock
-  });
-
   beforeEach(() => {
-    Object.defineProperty(window.document, 'cookie', {
-      writable: true,
-      value: 'myCookie=0123456789'
-    });
-
-    Cookie.get = jest.fn().mockImplementationOnce(() => '0123456789');
-
-    Cookie.remove = jest.fn().mockImplementationOnce(() => true);
+    Cookie.get = jest.fn().mockImplementationOnce(() => '');
 
     render(<Login />, { wrapper: BrowserRouter });
   });
@@ -56,6 +31,10 @@ describe('Login component test', () => {
   it('renders password label text', () => {
     const input = screen.getByLabelText('Password *');
     expect(input).toBeInTheDocument();
+  });
+
+  it('redirects to home(/) when isCookie', () => {
+    Cookie.get = jest.fn().mockImplementationOnce(() => '123456879');
   });
 
   it('inputs email and password', () => {
@@ -74,9 +53,17 @@ describe('Login component test', () => {
     state.data = null;
   });
 
-  it('inputs email and password', () => {
-    Cookie.get = jest.fn().mockImplementationOnce(() => '123456789');
+  it('triggers useNavigate on error', () => {
+    expect(mockedUsedNavigate).toBeCalled();
 
-    expect(sessionStorage.getItem('cookieId')).not.toEqual('123456789');
+    state.error = null;
+    state.loading = false;
+    state.data = {};
+  });
+
+  it('triggers useNavigate on cookie', () => {
+    Cookie.get = jest.fn().mockImplementationOnce(() => '123456789');
+    render(<Login />, { wrapper: BrowserRouter });
+    expect(mockedUsedNavigate).toBeCalled();
   });
 });

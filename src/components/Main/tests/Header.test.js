@@ -6,25 +6,6 @@ import { createMemoryHistory } from 'history';
 import Cookie from 'js-cookie';
 
 describe('Header component test', () => {
-  const sessionStorageMock = (function () {
-    const store = { cookieId: '123456789' };
-
-    return {
-      getItem (key) {
-        return store[key];
-      },
-
-      setItem (key) {
-        store.cookieId = 'false';
-        return store[key];
-      }
-    };
-  })();
-
-  Object.defineProperty(window, 'sessionStorage', {
-    value: sessionStorageMock
-  });
-
   beforeEach(() => {
     Object.defineProperty(window.document, 'cookie', {
       writable: true,
@@ -62,11 +43,5 @@ describe('Header component test', () => {
     );
     fireEvent.click(getByText(/logout/i));
     expect(Cookie.remove).toBeCalled();
-  });
-
-  it('renders login element', () => {
-    render(<Header />, { wrapper: BrowserRouter });
-    const loginElement = screen.getByText(/login/i);
-    expect(loginElement).toBeInTheDocument();
   });
 });

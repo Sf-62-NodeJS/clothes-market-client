@@ -4,7 +4,7 @@ import App from './App';
 
 Object.defineProperty(window.document, 'cookie', {
   writable: true,
-  value: 'connect.sid=123456789'
+  value: ''
 });
 
 test('renders learn react link', () => {

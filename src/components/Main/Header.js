@@ -9,7 +9,6 @@ function Header () {
   const location = useLocation();
 
   const isCookie = Cookie.get('connect.sid');
-  const sessionCookie = sessionStorage.getItem('cookieId');
 
   const { fetchRequest } = useHttpRequest({
     method: 'GET',
@@ -24,10 +23,10 @@ function Header () {
   ];
 
   useEffect(() => {
-    if (sessionStorage?.getItem('cookieId') === 'false') {
+    if (!isCookie) {
       fetchRequest();
     }
-  }, [sessionStorage.getItem('cookieId')]);
+  }, [isCookie]);
 
   return (
         <header className="header-section">
@@ -44,7 +43,7 @@ function Header () {
                         <Search />
                         <div className="col-lg-3 text-right col-md-3">
                             <ul className="nav-right">
-                                {isCookie === sessionCookie
+                                {isCookie
                                   ? (
                                     <>
                                         <li>
@@ -62,10 +61,6 @@ function Header () {
                                         <li
                                             onClick={function () {
                                               Cookie.remove('connect.sid');
-                                              sessionStorage.setItem(
-                                                'cookieId',
-                                                'false'
-                                              );
                                             }}
                                         >
                                             <NavLink to="/">

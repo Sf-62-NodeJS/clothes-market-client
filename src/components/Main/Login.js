@@ -9,7 +9,6 @@ const Login = () => {
 
   const navigate = useNavigate();
   const isCookie = Cookie.get('connect.sid');
-  const sessionCookie = sessionStorage.getItem('cookieId');
 
   const {
     fetchRequest,
@@ -19,12 +18,11 @@ const Login = () => {
   const loginHandler = (event) => {
     event.preventDefault();
     fetchRequest({ email, password });
-    sessionStorage.setItem('cookieId', isCookie);
   };
 
   if (error) return navigate('/error');
 
-  return isCookie === sessionCookie
+  return isCookie
     ? (
         navigate('/')
       )
