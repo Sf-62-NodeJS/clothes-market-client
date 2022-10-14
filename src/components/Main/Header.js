@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import Cookie from 'js-cookie';
 import useHttpRequest from '../../hooks/useHttpRequest';
@@ -21,12 +21,6 @@ function Header () {
     { path: '/products', title: 'Shop' },
     { path: '/contact', title: 'Contact' }
   ];
-
-  useEffect(() => {
-    if (!isCookie) {
-      fetchRequest();
-    }
-  }, [isCookie]);
 
   return (
         <header className="header-section">
@@ -61,6 +55,7 @@ function Header () {
                                         <li
                                             onClick={function () {
                                               Cookie.remove('connect.sid');
+                                              fetchRequest();
                                             }}
                                         >
                                             <NavLink to="/">
