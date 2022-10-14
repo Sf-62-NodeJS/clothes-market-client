@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useHttpRequest from '../../hooks/useHttpRequest';
 import Cookie from 'js-cookie';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const emailRef = useRef();
+  const passwordRef = useRef();
 
   const navigate = useNavigate();
   const isCookie = Cookie.get('connect.sid');
@@ -17,7 +17,10 @@ const Login = () => {
 
   const loginHandler = (event) => {
     event.preventDefault();
-    fetchRequest({ email, password });
+    fetchRequest({
+      email: emailRef.current.value,
+      password: passwordRef.current.value
+    });
   };
 
   if (error) return navigate('/error');
@@ -41,10 +44,7 @@ const Login = () => {
                                     <input
                                         type="email"
                                         id="email"
-                                        onChange={(e) =>
-                                          setEmail(e.target.value)
-                                        }
-                                        value={email}
+                                        ref={emailRef}
                                         required
                                     />
                                 </div>
@@ -54,10 +54,7 @@ const Login = () => {
                                         type="password"
                                         id="password"
                                         role="password"
-                                        onChange={(e) =>
-                                          setPassword(e.target.value)
-                                        }
-                                        value={password}
+                                        ref={passwordRef}
                                         required
                                     />
                                 </div>
