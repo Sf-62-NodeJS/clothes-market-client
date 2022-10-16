@@ -26,7 +26,10 @@ const Sizes = () => {
       return navigate(locationSearch.replace(/[?]sizes=[^&]*/, '?'));
     }
 
-    if (checked.length !== 0 && !locationSearch) {
+    if (
+      checked.length !== 0 &&
+            (!locationSearch || /[?]sizes/.test(locationSearch))
+    ) {
       return navigate(`?sizes=${sizes}`);
     }
 
@@ -46,7 +49,11 @@ const Sizes = () => {
   const handleCheck = (event) => {
     if (event.target.checked) setChecked([...checked, event.target.value]);
 
-    setChecked(checked.filter((checkbox) => checkbox !== event.target.name));
+    if (!event.target.checked) {
+      setChecked(
+        checked.filter((checkbox) => checkbox !== event.target.name)
+      );
+    }
   };
 
   useEffect(() => {
@@ -65,12 +72,12 @@ const Sizes = () => {
                             <input
                                 type="checkbox"
                                 id={size._id}
-                                name={size.name}
                                 title={size.name}
+                                name={size.name}
                                 value={size.name}
                                 onChange={handleCheck}
                             />
-                            <label htmlFor={size.name}>{size.name}</label>
+                            <label htmlFor={size.name}>&nbsp;{size.name}</label>
                         </div>
                     ))}
             </div>
