@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import useHttpRequest from '../../hooks/useHttpRequest';
+import Loading from './Loading';
 
 const Search = () => {
   const navigate = useNavigate();
@@ -16,14 +17,12 @@ const Search = () => {
     preventAutoFetch: true
   });
 
-  const search = () => {
-    if (searchTerm.length > 0) {
-      fetchRequest();
-    }
-  };
-
   useEffect(() => {
-    search();
+    const search = setTimeout(() => {
+      searchTerm.length > 0 && fetchRequest();
+    }, 500);
+
+    return () => clearTimeout(search);
   }, [searchTerm]);
 
   return (
@@ -40,7 +39,9 @@ const Search = () => {
                     {error && navigate('/error')}
                     {loading && (
                         <ul>
-                            <li>Loading</li>
+                            <li>
+                                <Loading />
+                            </li>
                         </ul>
                     )}
                     {searchTerm &&

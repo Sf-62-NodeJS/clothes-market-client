@@ -8,7 +8,7 @@ import Search from './Search';
 function Header () {
   const location = useLocation();
 
-  const isCookie = Cookie.get('connect.sid');
+  const isAuthorized = Cookie.get('connect.sid');
 
   const { fetchRequest } = useHttpRequest({
     method: 'GET',
@@ -37,7 +37,7 @@ function Header () {
                         <Search />
                         <div className="col-lg-3 text-right col-md-3">
                             <ul className="nav-right">
-                                {isCookie
+                                {isAuthorized
                                   ? (
                                     <>
                                         <li>
