@@ -7,7 +7,7 @@ Object.defineProperty(window.document, 'cookie', {
   value: ''
 });
 
-test('renders learn react link', () => {
+test('renders app component', () => {
   render(<App />);
   const shop = screen.getByText(/shop/i);
   expect(shop).toBeInTheDocument();
