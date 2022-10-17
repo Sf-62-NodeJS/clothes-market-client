@@ -1,9 +1,14 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+Object.defineProperty(window.document, 'cookie', {
+  writable: true,
+  value: ''
+});
+
+test('renders app component', () => {
   render(<App />);
-  // const linkElement = screen.getByText(/learn react/i);
-  // expect(linkElement).toBeInTheDocument();
+  const shop = screen.getByText(/shop/i);
+  expect(shop).toBeInTheDocument();
 });
