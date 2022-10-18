@@ -49,6 +49,11 @@ describe('Price component test', () => {
     });
 
     expect(minPrice).toHaveValue(5);
+
+    const button = screen.getByRole('button');
+    fireEvent.click(button);
+
+    expect(minPrice).toHaveValue(null);
   });
 
   it('should interact with maxPrice', () => {

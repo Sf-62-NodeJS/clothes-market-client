@@ -13,12 +13,16 @@ const Price = () => {
   const [minPrice, setMinPrice] = useState(minPriceParam || '');
   const [maxPrice, setMaxPrice] = useState(maxPriceParam || '');
 
+  const queryStart = () => {
+    return searchLine.length ? '&' : '?';
+  };
+
   useEffect(() => {
     const price = setTimeout(() => {
       if (+minPrice) {
         if (!minPriceParam) {
           searchLine = searchLine.concat(
-                        `${searchLine.length ? '&' : '?'}minPrice=${minPrice}`
+                        `${queryStart()}minPrice=${minPrice}`
           );
         }
 
@@ -28,7 +32,7 @@ const Price = () => {
       if (+maxPrice) {
         if (!maxPriceParam) {
           searchLine = searchLine.concat(
-                        `${searchLine.length ? '&' : '?'}maxPrice=${maxPrice}`
+                        `${queryStart()}maxPrice=${maxPrice}`
           );
         }
 
@@ -65,6 +69,17 @@ const Price = () => {
                         />
                     </div>
                 </div>
+                {(minPrice || maxPrice) && (
+                    <button
+                        onClick={() => {
+                          setMaxPrice('');
+                          setMinPrice('');
+                        }}
+                        className="btn btn-dark btn-sm"
+                    >
+                        Clear Prices
+                    </button>
+                )}
             </div>
         </div>
   );
