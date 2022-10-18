@@ -57,7 +57,11 @@ const Sizes = () => {
   };
 
   useEffect(() => {
-    query();
+    const sizes = setTimeout(() => {
+      query();
+    }, 500);
+
+    return () => clearTimeout(sizes);
   }, [checked]);
 
   return (

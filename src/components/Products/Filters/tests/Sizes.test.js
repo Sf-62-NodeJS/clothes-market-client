@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, act } from '@testing-library/react';
 import Sizes from '../Sizes';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -45,6 +45,7 @@ jest.mock('react-router-dom', () => ({
 
 describe('Sizes', () => {
   beforeEach(() => {
+    jest.useFakeTimers();
     render(<Sizes />, { wrapper: BrowserRouter });
   });
 
@@ -53,7 +54,27 @@ describe('Sizes', () => {
     const boxM = screen.getByRole('checkbox', { name: 'M' });
 
     fireEvent.click(boxS);
+
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
+
     fireEvent.click(boxM);
+
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
+
     fireEvent.click(boxS);
+
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
+
+    fireEvent.click(boxM);
+
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
   });
 });

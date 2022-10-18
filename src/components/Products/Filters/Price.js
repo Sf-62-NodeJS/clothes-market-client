@@ -16,19 +16,23 @@ const Price = () => {
   useEffect(() => {
     const price = setTimeout(() => {
       if (+minPrice) {
-        minPriceParam
-          ? (searchLine = searchLine.replace(minPriceParam, minPrice))
-          : (searchLine = searchLine.concat(
-                          `${searchLine.length ? '&' : '?'}minPrice=${minPrice}`
-            ));
+        if (!minPriceParam) {
+          searchLine = searchLine.concat(
+                        `${searchLine.length ? '&' : '?'}minPrice=${minPrice}`
+          );
+        }
+
+        searchLine = searchLine.replace(minPriceParam, minPrice);
       }
 
       if (+maxPrice) {
-        maxPriceParam
-          ? (searchLine = searchLine.replace(maxPriceParam, maxPrice))
-          : (searchLine = searchLine.concat(
-                          `${searchLine.length ? '&' : '?'}maxPrice=${maxPrice}`
-            ));
+        if (!maxPriceParam) {
+          searchLine = searchLine.concat(
+                        `${searchLine.length ? '&' : '?'}maxPrice=${maxPrice}`
+          );
+        }
+
+        searchLine = searchLine.replace(maxPriceParam, maxPrice);
       }
 
       navigate(searchLine);

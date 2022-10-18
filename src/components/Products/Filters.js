@@ -13,8 +13,11 @@ const Filters = () => {
             {location.search
               ? (
                 <>
-                    <button onClick={() => navigate('/products')}>
-                        Clear Search
+                    <button
+                        onClick={() => navigate('/products')}
+                        className="btn btn-dark btn-sm"
+                    >
+                        Clear Filters
                     </button>
                     <br />
                     <br />

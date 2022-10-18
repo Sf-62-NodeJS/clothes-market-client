@@ -24,12 +24,13 @@ describe('Price component test', () => {
   it('should interact with minPrice', () => {
     mockUseLocationValue.search = '';
     const minPrice = screen.getByRole('spinbutton', { name: 'minPrice' });
-    act(() => {
-      jest.runOnlyPendingTimers();
-    });
 
     fireEvent.change(minPrice, {
       target: { value: '5' }
+    });
+
+    act(() => {
+      jest.runOnlyPendingTimers();
     });
 
     expect(minPrice).toHaveValue(5);
@@ -39,12 +40,12 @@ describe('Price component test', () => {
     mockUseLocationValue.search = '?smt=smt';
     const minPrice = screen.getByRole('spinbutton', { name: 'minPrice' });
 
-    act(() => {
-      jest.runOnlyPendingTimers();
-    });
-
     fireEvent.change(minPrice, {
       target: { value: '5' }
+    });
+
+    act(() => {
+      jest.runOnlyPendingTimers();
     });
 
     expect(minPrice).toHaveValue(5);
@@ -54,12 +55,12 @@ describe('Price component test', () => {
     mockUseLocationValue.search = '?minPrice=2';
     const maxPrice = screen.getByRole('spinbutton', { name: 'maxPrice' });
 
-    act(() => {
-      jest.runOnlyPendingTimers();
-    });
-
     fireEvent.change(maxPrice, {
       target: { value: '15' }
+    });
+
+    act(() => {
+      jest.runOnlyPendingTimers();
     });
 
     expect(maxPrice).toHaveValue(15);
@@ -69,12 +70,12 @@ describe('Price component test', () => {
     mockUseLocationValue.search = '?maxPrice=3';
     const maxPrice = screen.getByRole('spinbutton', { name: 'maxPrice' });
 
-    act(() => {
-      jest.runOnlyPendingTimers();
-    });
-
     fireEvent.change(maxPrice, {
       target: { value: '20' }
+    });
+
+    act(() => {
+      jest.runOnlyPendingTimers();
     });
 
     expect(maxPrice).toHaveValue(20);
