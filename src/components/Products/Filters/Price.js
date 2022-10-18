@@ -1,40 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const Price = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
+  let searchLine = location.search;
+  const urlParams = new URLSearchParams(searchLine);
+  const minPriceParam = urlParams.get('minPrice');
+  const maxPriceParam = urlParams.get('maxPrice');
 
-  const query = () => {
-    const locationSearch = location.search;
-    const urlParams = new URLSearchParams(locationSearch);
-    const minPriceParam = urlParams.get('minPrice');
-    const maxPriceParam = urlParams.get('maxPrice');
+  const [minPrice, setMinPrice] = useState(minPriceParam || '');
+  const [maxPrice, setMaxPrice] = useState(maxPriceParam || '');
 
-    if (minPrice || maxPrice) {
-      if (!locationSearch) {
-        return navigate(`?minPrice=${minPrice}&maxPrice=${maxPrice}`);
+  useEffect(() => {
+    const price = setTimeout(() => {
+      if (+minPrice) {
+        minPriceParam
+          ? (searchLine = searchLine.replace(minPriceParam, minPrice))
+          : (searchLine = searchLine.concat(
+                          `${searchLine.length ? '&' : '?'}minPrice=${minPrice}`
+            ));
       }
 
-      if (/minPrice/.test(locationSearch) && minPriceParam !== minPrice) {
-        return navigate(locationSearch.replace(minPriceParam, minPrice));
+      if (+maxPrice) {
+        maxPriceParam
+          ? (searchLine = searchLine.replace(maxPriceParam, maxPrice))
+          : (searchLine = searchLine.concat(
+                          `${searchLine.length ? '&' : '?'}maxPrice=${maxPrice}`
+            ));
       }
 
-      if (/maxPrice/.test(locationSearch) && maxPriceParam !== maxPrice) {
-        return navigate(locationSearch.replace(maxPriceParam, maxPrice));
-      }
+      navigate(searchLine);
+    }, 1000);
 
-      return navigate(
-        locationSearch.concat(
-          '&',
-                    `minPrice=${minPrice}&maxPrice=${maxPrice}`
-        )
-      );
-    }
-  };
+    return () => clearTimeout(price);
+  }, [minPrice, maxPrice]);
 
   return (
         <div className="filter-widget">
@@ -60,9 +61,6 @@ const Price = () => {
                         />
                     </div>
                 </div>
-            </div>
-            <div onClick={query} title="filter" className="filter-btn">
-                Filter Price
             </div>
         </div>
   );

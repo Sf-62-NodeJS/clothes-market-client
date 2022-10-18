@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import Filters from './Filters';
 import useHttpRequest from '../../hooks/useHttpRequest';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate, Link } from 'react-router-dom';
+import Loading from '../Main/Loading';
 
 const Products = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   const name = searchParams.get('name') || '';
@@ -22,7 +24,7 @@ const Products = () => {
 
   useEffect(() => {
     fetchRequest();
-  }, [category, sizes, minPrice, maxPrice]);
+  }, [searchParams]);
 
   return (
         <section className="product-shop spad">
@@ -32,8 +34,8 @@ const Products = () => {
                     <div className="col-lg-9 order-1 order-lg-2">
                         <div className="product-list">
                             <div className="row">
-                                {error && <li>Error...</li>}
-                                {loading && <li>Loading...</li>}
+                                {error && navigate('/error')}
+                                {loading && <Loading />}
                                 {data &&
                                     data.map((product) => (
                                         <div
@@ -42,38 +44,28 @@ const Products = () => {
                                         >
                                             <div className="product-item">
                                                 <div className="pi-pic">
-                                                    <img
-                                                        src={`${process.env.REACT_APP_SERVER_URL}image/${product.image}`}
-                                                        alt=""
-                                                    />
+                                                    <Link to={product._id}>
+                                                        <img
+                                                            src={`${process.env.REACT_APP_SERVER_URL}image/${product.image}`}
+                                                            alt=""
+                                                        />
+                                                    </Link>
                                                     <ul>
-                                                        <li className="w-icon active">
-                                                            <a
-                                                                href={
-                                                                    product._id
-                                                                }
-                                                            >
-                                                                <i className="icon_bag_alt"></i>
-                                                                Add to cart
-                                                            </a>
-                                                        </li>
                                                         <li className="quick-view">
-                                                            <a
-                                                                href={
-                                                                    product._id
-                                                                }
+                                                            <Link
+                                                                to={product._id}
                                                             >
                                                                 View Product
-                                                            </a>
+                                                            </Link>
                                                         </li>
                                                     </ul>
                                                 </div>
                                                 <div className="pi-text">
-                                                    <a href="product">
+                                                    <Link to={product._id}>
                                                         <h5>{product.name}</h5>
-                                                    </a>
+                                                    </Link>
                                                     <div className="product-price">
-                                                        {product.price}
+                                                        ${product.price}
                                                     </div>
                                                 </div>
                                             </div>
