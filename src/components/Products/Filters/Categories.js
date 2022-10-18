@@ -1,9 +1,11 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useHttpRequest from '../../../hooks/useHttpRequest';
+import Loading from '../../Main/Loading';
 
 const Categories = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const {
     state: { error, data, loading }
@@ -32,8 +34,8 @@ const Categories = () => {
         <div className="filter-widget">
             <h4 className="fw-title">Categories</h4>
             <ul className="filter-catagories">
-                {error && <li title="error">Error...</li>}
-                {loading && <li>Loading...</li>}
+                {error && navigate('/error')}
+                {loading && <Loading />}
                 {data &&
                     data.map((category) => (
                         <li key={category._id}>

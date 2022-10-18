@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import useHttpRequest from '../../../hooks/useHttpRequest';
+import Loading from '../../Main/Loading';
 
 const Sizes = () => {
   const navigate = useNavigate();
@@ -68,8 +69,8 @@ const Sizes = () => {
         <div className="filter-widget">
             <h4 className="fw-title">Size</h4>
             <div className="fw-size-choose">
-                {error && <div>Error</div>}
-                {loading && <div>Loading</div>}
+                {error && navigate('/error')}
+                {loading && <Loading />}
                 {data &&
                     data.map((size) => (
                         <div key={size._id}>

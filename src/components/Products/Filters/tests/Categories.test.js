@@ -14,6 +14,13 @@ jest.mock('react-router-dom', () => ({
   useLocation: () => mockUseLocationValue
 }));
 
+const mockedUsedNavigate = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockedUsedNavigate
+}));
+
 const state = {
   data: [{ _id: 'id', name: 'name' }],
   loading: true,
@@ -38,8 +45,7 @@ describe('Categories component test', () => {
   });
 
   it('should render error in categories component', () => {
-    const category = screen.getByText(/error/i);
-    expect(category).toBeInTheDocument();
+    expect(mockedUsedNavigate).toBeCalled();
 
     state.error = null;
     state.loading = false;

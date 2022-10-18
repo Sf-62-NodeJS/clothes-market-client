@@ -38,9 +38,11 @@ jest.mock('../../../../hooks/useHttpRequest', () => () => ({
   state
 }));
 
+const mockedUsedNavigate = jest.fn();
+
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
-  useNavigate: () => jest.fn()
+  useNavigate: () => mockedUsedNavigate
 }));
 
 describe('Sizes', () => {
@@ -76,5 +78,15 @@ describe('Sizes', () => {
     act(() => {
       jest.runOnlyPendingTimers();
     });
+
+    state.error = {};
+  });
+
+  it('should redirect to error component', () => {
+    state.error = {};
+    state.data = null;
+    state.loading = false;
+
+    expect(mockedUsedNavigate).toBeCalled();
   });
 });
