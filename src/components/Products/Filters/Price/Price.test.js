@@ -1,5 +1,5 @@
 import React from 'react';
-import Price from '../Price';
+import Price from './Price';
 import { screen, render, fireEvent, act } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 

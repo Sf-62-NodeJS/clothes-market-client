@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Categories from './Filters/Categories';
-import Price from './Filters/Price';
-import Sizes from './Filters/Sizes';
+import Categories from './Filters/Categories/Categories';
+import Price from './Filters/Price/Price';
+import Sizes from './Filters/Sizes/Sizes';
 
 const Filters = () => {
   const navigate = useNavigate();
@@ -10,8 +10,7 @@ const Filters = () => {
 
   return (
         <div className="col-lg-3 col-md-6 col-sm-8 order-2 order-lg-1 produts-sidebar-filter">
-            {location.search
-              ? (
+            {location.search && (
                 <>
                     <button
                         onClick={() => navigate('/products')}
@@ -22,10 +21,7 @@ const Filters = () => {
                     <br />
                     <br />
                 </>
-                )
-              : (
-                  ''
-                )}
+            )}
             <Categories />
             <Price />
             <Sizes />

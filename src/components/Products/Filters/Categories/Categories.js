@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import useHttpRequest from '../../../hooks/useHttpRequest';
-import Loading from '../../Main/Loading';
+import useHttpRequest from '../../../../hooks/useHttpRequest';
+import Loading from '../../../Main/Loading';
 
 const Categories = () => {
   const location = useLocation();
@@ -18,16 +18,12 @@ const Categories = () => {
     const locationSearch = location.search;
     const urlParams = new URLSearchParams(locationSearch);
 
-    if (!locationSearch) {
-      return `?category=${name}`;
-    }
-
     if (locationSearch.includes('category')) {
       const category = urlParams.get('category');
       return locationSearch.replace(category, name);
     }
 
-    return locationSearch.concat('&', `category=${name}`);
+    return `${locationSearch}${!locationSearch ? '?' : '&'}category=${name}`;
   };
 
   return (

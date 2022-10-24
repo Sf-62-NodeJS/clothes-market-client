@@ -1,5 +1,5 @@
 import React from 'react';
-import Categories from '../Categories';
+import Categories from './Categories';
 import { screen, render, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 

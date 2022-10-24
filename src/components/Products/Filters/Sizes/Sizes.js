@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import useHttpRequest from '../../../hooks/useHttpRequest';
-import Loading from '../../Main/Loading';
+import useHttpRequest from '../../../../hooks/useHttpRequest';
+import Loading from '../../../Main/Loading';
 
 const Sizes = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [checked, setChecked] = useState([]);
+  const locationSearch = location.search;
+  const urlParams = new URLSearchParams(locationSearch);
+  const sizes = urlParams.get('sizes');
+
+  const [checked, setChecked] = useState(sizes || []);
 
   const {
     state: { error, data, loading }
@@ -17,34 +21,21 @@ const Sizes = () => {
   });
 
   const query = () => {
-    const locationSearch = location.search;
     const sizes = checked.join(',');
 
-    if (checked.length === 0 && locationSearch.includes('sizes')) {
-      if (locationSearch.includes('&sizes')) {
-        return navigate(locationSearch.replace(/&sizes=[^&]*/, ''));
+    if (checked.length) {
+      if (locationSearch.includes('sizes')) {
+        return navigate(
+          locationSearch.replace(/sizes=[^&]*/, `sizes=${sizes}`)
+        );
       }
-      return navigate(locationSearch.replace(/[?]sizes=[^&]*/, '?'));
+
+      return locationSearch.length
+        ? navigate(locationSearch.concat(`&sizes=${sizes}`))
+        : navigate(locationSearch.concat(`?sizes=${sizes}`));
     }
 
-    if (
-      checked.length !== 0 &&
-            (!locationSearch || /[?]sizes/.test(locationSearch))
-    ) {
-      return navigate(`?sizes=${sizes}`);
-    }
-
-    if (checked.length !== 0 && /sizes/.test(locationSearch)) {
-      return navigate(
-        locationSearch.replace(/&sizes=[^&]*/, `&sizes=${sizes}`)
-      );
-    }
-
-    if (checked.length !== 0 && locationSearch) {
-      return navigate(locationSearch.concat('&', `sizes=${sizes}`));
-    }
-
-    return navigate('?');
+    return navigate(locationSearch.replace(/[?|&]sizes=[^&]*/, ''));
   };
 
   const handleCheck = (event) => {

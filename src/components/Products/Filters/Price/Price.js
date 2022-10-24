@@ -5,8 +5,8 @@ const Price = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  let searchLine = location.search;
-  const urlParams = new URLSearchParams(searchLine);
+  let locationSearch = location.search;
+  const urlParams = new URLSearchParams(locationSearch);
   const minPriceParam = urlParams.get('minPrice');
   const maxPriceParam = urlParams.get('maxPrice');
 
@@ -14,32 +14,32 @@ const Price = () => {
   const [maxPrice, setMaxPrice] = useState(maxPriceParam || '');
 
   const queryStart = () => {
-    return searchLine.length ? '&' : '?';
+    return locationSearch.length ? '&' : '?';
   };
 
   useEffect(() => {
     const price = setTimeout(() => {
       if (+minPrice) {
         if (!minPriceParam) {
-          searchLine = searchLine.concat(
+          locationSearch = locationSearch.concat(
                         `${queryStart()}minPrice=${minPrice}`
           );
         }
 
-        searchLine = searchLine.replace(minPriceParam, minPrice);
+        locationSearch = locationSearch.replace(minPriceParam, minPrice);
       }
 
       if (+maxPrice) {
         if (!maxPriceParam) {
-          searchLine = searchLine.concat(
+          locationSearch = locationSearch.concat(
                         `${queryStart()}maxPrice=${maxPrice}`
           );
         }
 
-        searchLine = searchLine.replace(maxPriceParam, maxPrice);
+        locationSearch = locationSearch.replace(maxPriceParam, maxPrice);
       }
 
-      navigate(searchLine);
+      navigate(locationSearch);
     }, 1000);
 
     return () => clearTimeout(price);

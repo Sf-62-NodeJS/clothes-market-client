@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen, act } from '@testing-library/react';
-import Sizes from '../Sizes';
+import Sizes from './Sizes';
 import { BrowserRouter } from 'react-router-dom';
 
 const mockUseLocationValue = {
