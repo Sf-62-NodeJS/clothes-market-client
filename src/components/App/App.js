@@ -7,6 +7,7 @@ import Header from '../Main/Header';
 import Login from '../Main/Login';
 import Error from '../Main/Error';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Products from '../Products/Products';
 
 function App () {
   return (
@@ -17,7 +18,7 @@ function App () {
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/error" element={<Error />} />
-                    <Route path="/products" element="" />
+                    <Route path="/products" element={<Products />} />
                 </Routes>
             </main>
         </BrowserRouter>
