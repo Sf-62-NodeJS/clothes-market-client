@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Products from '../Products';
+import Products from './Products';
 import { BrowserRouter } from 'react-router-dom';
 
 const state = {
@@ -9,7 +9,7 @@ const state = {
   error: null
 };
 
-jest.mock('../../../hooks/useHttpRequest', () => () => ({
+jest.mock('../../hooks/useHttpRequest', () => () => ({
   fetchRequest: jest.fn(),
   state
 }));

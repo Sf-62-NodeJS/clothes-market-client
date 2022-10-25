@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Filters from './Filters';
+import Filters from '../Filters/Filters';
 import useHttpRequest from '../../hooks/useHttpRequest';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import Loading from '../Main/Loading';

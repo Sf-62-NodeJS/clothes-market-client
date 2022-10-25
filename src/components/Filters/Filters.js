@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Categories from './Filters/Categories/Categories';
-import Price from './Filters/Price/Price';
-import Sizes from './Filters/Sizes/Sizes';
+import Categories from '../Categories/Categories';
+import Price from '../Price/Price';
+import Sizes from '../Sizes/Sizes';
 
 const Filters = () => {
   const navigate = useNavigate();

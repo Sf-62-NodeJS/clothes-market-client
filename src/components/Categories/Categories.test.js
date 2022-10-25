@@ -27,7 +27,7 @@ const state = {
   error: null
 };
 
-jest.mock('../../../../hooks/useHttpRequest', () => () => ({
+jest.mock('../../hooks/useHttpRequest', () => () => ({
   fetchRequest: jest.fn(),
   state
 }));

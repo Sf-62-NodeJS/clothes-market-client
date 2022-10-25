@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import useHttpRequest from '../../../../hooks/useHttpRequest';
-import Loading from '../../../Main/Loading';
+import useHttpRequest from '../../hooks/useHttpRequest';
+import Loading from '../Main/Loading';
 
 const Sizes = () => {
   const navigate = useNavigate();

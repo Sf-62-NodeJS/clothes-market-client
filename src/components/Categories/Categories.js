@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import useHttpRequest from '../../../../hooks/useHttpRequest';
-import Loading from '../../../Main/Loading';
+import useHttpRequest from '../../hooks/useHttpRequest';
+import Loading from '../Main/Loading';
 
 const Categories = () => {
   const location = useLocation();
