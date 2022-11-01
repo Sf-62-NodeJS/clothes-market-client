@@ -10,22 +10,16 @@ const SingleProduct = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  let [quantity, setQuantity] = useState(1);
-  const [size, setSize] = useState('');
-
   const isAuthorized = Cookie.get('connect.sid');
 
-  const increaseQuantity = () => {
-    quantity = quantity + 1;
-    setQuantity(quantity);
-  };
+  const [size, setSize] = useState('');
+  const [quantity, setQuantity] = useState(1);
 
-  const decreaseQuantity = () => {
-    if (quantity - 1 > 0) {
-      quantity = quantity - 1;
-      setQuantity(quantity);
-    }
-  };
+  const increaseQuantity = () => setQuantity(quantity + 1);
+  let decreaseQuantity = () => setQuantity(quantity - 1);
+  if (quantity <= 1) {
+    decreaseQuantity = () => setQuantity(1);
+  }
 
   const {
     fetchRequest: productRequest,

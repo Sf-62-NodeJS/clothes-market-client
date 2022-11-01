@@ -87,4 +87,19 @@ describe('SingleProduct', () => {
 
     state.error = null;
   });
+
+  it('should render the SingleProduct component', () => {
+    const { getByText } = render(<SingleProduct />, {
+      wrapper: BrowserRouter
+    });
+    fireEvent.click(getByText('Add To Cart'));
+  });
+
+  it('should render the SingleProduct component', () => {
+    Cookie.get = jest.fn().mockImplementation(() => '');
+    const { getByText } = render(<SingleProduct />, {
+      wrapper: BrowserRouter
+    });
+    fireEvent.click(getByText('Login to Shop'));
+  });
 });
