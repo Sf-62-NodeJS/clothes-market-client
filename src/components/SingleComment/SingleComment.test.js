@@ -102,19 +102,11 @@ describe('<CommentUpdate />', () => {
     };
 
     Cookie.get = jest.fn().mockImplementation(() => '123456789');
-  });
 
-  it('should render without crashing', () => {
-    const { getByText } = render(
-            <BrowserRouter>
-                <SingleComment {...props} />
-            </BrowserRouter>
-    );
-    expect(getByText('Edit comment')).toBeInTheDocument();
+    render(<SingleComment {...props} />, { wrapper: BrowserRouter });
   });
 
   it('should click a button to edit a comment', () => {
-    render(<SingleComment {...props} />, { wrapper: BrowserRouter });
     const editButton = screen.getByText(/Edit comment/i);
     fireEvent.click(editButton);
 
@@ -128,8 +120,17 @@ describe('<CommentUpdate />', () => {
     fireEvent.click(updateButton);
   });
 
+  it('should click a button to delete a comment', () => {
+    const editButton = screen.getByText(/Edit comment/i);
+    fireEvent.click(editButton);
+
+    const deleteButton = screen.getByText(/Delete comment/i);
+    expect(deleteButton).toBeInTheDocument();
+
+    fireEvent.click(deleteButton);
+  });
+
   it('should cancel to edit a comment', () => {
-    render(<SingleComment {...props} />, { wrapper: BrowserRouter });
     const editButton = screen.getByText(/Edit comment/i);
     fireEvent.click(editButton);
 
@@ -143,7 +144,6 @@ describe('<CommentUpdate />', () => {
   });
 
   it('should update comment and get an error', () => {
-    render(<SingleComment {...props} />, { wrapper: BrowserRouter });
     const editButton = screen.getByText(/Edit comment/i);
     fireEvent.click(editButton);
 
@@ -160,8 +160,30 @@ describe('<CommentUpdate />', () => {
   });
 
   it('should set searchParams', () => {
-    const { getByText } = render(<SingleComment {...props} />);
-    fireEvent.click(getByText('Delete Comment'));
+    fireEvent.click(screen.getByText('Edit comment'));
+    fireEvent.click(screen.getByText('Delete Comment'));
     expect(mockedFetchRequest).toHaveBeenCalled();
+  });
+
+  it('should cancel reply comment', async () => {
+    const replyCommentButton = screen.getByText('Reply to this comment');
+    fireEvent.click(replyCommentButton);
+
+    const cancelCommentInput = screen.getByText('Cancel');
+    fireEvent.click(cancelCommentInput);
+  });
+
+  it('should send reply comment', async () => {
+    const comment = 'test comment';
+    const replyCommentButton = screen.getByText('Reply to this comment');
+    fireEvent.click(replyCommentButton);
+
+    const commentInput = screen.getByPlaceholderText(
+      'Write reply comment...'
+    );
+    fireEvent.change(commentInput, { target: { value: comment } });
+
+    const sendReplyCommentButton = screen.getByText('Send reply comment');
+    fireEvent.click(sendReplyCommentButton);
   });
 });
