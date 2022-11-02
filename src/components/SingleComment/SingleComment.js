@@ -312,7 +312,8 @@ const SingleComment = ({ userId, commentId, commentValue }) => {
                                         {replyComment.comment}
                                         {isAuthorized &&
                                             userData &&
-                                            userData._id === userId && (
+                                            userData._id ===
+                                                replyComment.userId && (
                                                 <>
                                                     <br />
                                                     <br />
@@ -321,7 +322,8 @@ const SingleComment = ({ userId, commentId, commentValue }) => {
                                         <div className="btn-group">
                                             {isAuthorized &&
                                                 userData &&
-                                                userData._id === userId && (
+                                                userData._id ===
+                                                    replyComment.userId && (
                                                     <div className="leave-comment">
                                                         {updateReplyCommentLoading && (
                                                             <Loading />
